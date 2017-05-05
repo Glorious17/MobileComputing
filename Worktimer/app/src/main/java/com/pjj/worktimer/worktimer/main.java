@@ -19,7 +19,6 @@ public class main extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter vpa;
     private Dashboard dashboard;
-    private ProjectLayout pl;
     private FloatingActionButton fab;
 
     @Override
@@ -34,7 +33,6 @@ public class main extends AppCompatActivity {
         vpa = new ViewPagerAdapter(getSupportFragmentManager());
         vpa.addFragment("Statistik", new Statistik());
         dashboard = new Dashboard();
-        pl = dashboard.getProjectLayout();
         vpa.addFragment("Dashboard", dashboard);
         vpa.addFragment("Einstellungen", new Einstellungen());
         viewPager.setAdapter(vpa);
@@ -49,8 +47,9 @@ public class main extends AppCompatActivity {
         return(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(),"drawProjects",Toast.LENGTH_SHORT).show();
-                pl.addProject();
+                
+                dashboard.addProject();
+
             }
         });
     }
