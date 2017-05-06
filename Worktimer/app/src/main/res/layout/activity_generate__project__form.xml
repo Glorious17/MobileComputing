@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,29 +7,162 @@
     android:layout_height="match_parent"
     tools:context="com.pjj.worktimer.worktimer.Generate_Project_Form">
 
-    <include
-        layout="@layout/toolbar_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolBar"
-        android:layout_marginLeft="20dp"
-        android:id="@+id/textName"
-        android:text="Name:"/>
+        <include
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/editName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_below="@+id/textName"/>
+        <TextView
+            android:id="@+id/textName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolBar"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="Name:"/>
 
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/textName"
+            android:textColorHint="@color/tabIndicatorColor"
+            android:singleLine="true"/>
 
+        <TextView
+            android:id="@+id/textFirma"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editName"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="Firma:"/>
 
+        <EditText
+            android:id="@+id/editFirma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/textFirma"
+            android:singleLine="true"/>
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textStrasse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/editFirma"
+            android:text="Straße:"/>
+
+        <EditText
+            android:id="@+id/editStrasse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="80dp"
+            android:layout_below="@+id/textStrasse"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/textNr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="50dp"
+            android:layout_below="@+id/editFirma"
+            android:layout_alignParentEnd="true"
+            android:text="Nr:"/>
+
+        <EditText
+            android:id="@+id/editNr"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textNr"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/textLand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/editStrasse"
+            android:text="Land:"/>
+
+        <EditText
+            android:id="@+id/editLand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/textLand"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/textUst_idnr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/editLand"
+            android:text="Ust.-IdNr:"/>
+
+        <EditText
+            android:id="@+id/editUst_idnr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/textUst_idnr"
+            android:singleLine="true"/>
+
+        <TextView
+            android:id="@+id/textSteuernummer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/editUst_idnr"
+            android:text="Steuernummer:"/>
+
+        <EditText
+            android:id="@+id/editSteuernummer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/textSteuernummer"
+            android:singleLine="true"/>
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/toolbarColor"
+            android:background="@color/tabIndicatorColor"
+            android:layout_below="@+id/editSteuernummer"
+            android:text="Speichern"/>
+    </RelativeLayout>
+
+</ScrollView>

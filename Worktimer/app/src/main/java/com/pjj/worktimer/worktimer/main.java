@@ -1,5 +1,7 @@
 package com.pjj.worktimer.worktimer;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class main extends AppCompatActivity {
 
@@ -43,15 +47,35 @@ public class main extends AppCompatActivity {
         fab.setOnClickListener(onclick());
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case (RequestCodes.GENERATE_PROJECT_FROM):
+                if(resultCode == RESULT_OK){
+                    writeFormData(data.getStringArrayListExtra("generate_project_form"));
+                }
+                break;
+        }
+    }
+
+    public void writeFormData(ArrayList<String> formData){
+        if(formData != null){
+            Toast.makeText(getBaseContext(), ""+formData.get(1), Toast.LENGTH_SHORT);
+            dashboard.addProject(formData);
+        }
+    }
+
     public View.OnClickListener onclick(){
-        return(new View.OnClickListener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
-                dashboard.addProject();
 
+                //dashboard.addProject();
+                Intent generateProjectForm = new Intent(getBaseContext(), Generate_Project_Form.class);
+                startActivityForResult(generateProjectForm, RequestCodes.GENERATE_PROJECT_FROM);
             }
-        });
+        };
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

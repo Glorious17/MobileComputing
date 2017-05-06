@@ -35,7 +35,7 @@ public class Dashboard extends Fragment {
 
     public Dashboard(){    }
 
-    public void addProject(){
+    public void addProject(ArrayList<String> formData){
         //surrounding Layout
         RelativeLayout newView = new RelativeLayout(getContext());
         //newView.setLayoutParams(new RelativeLayout.LayoutParams(dp(160), dp(160)));
@@ -45,7 +45,8 @@ public class Dashboard extends Fragment {
         //Textview inside the previous Layout
         tv = new TextView(getContext());
         tv.setId(View.generateViewId());
-        tv.setText("Projekt x \nDeadline \nSoll \nIst \nUmsatz");
+        tv.setText(formData.get(0)+"\n" + formData.get(1) + "\n" + formData.get(2) + "\n" + formData.get(3)
+          + "\n" + formData.get(4) + "\n" + formData.get(5) + "\n" + formData.get(6));
         tv.setGravity(Gravity.CENTER);
         mpl = new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         tv.setLayoutParams(mpl);
