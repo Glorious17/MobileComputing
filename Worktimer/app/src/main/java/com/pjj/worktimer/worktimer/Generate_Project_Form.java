@@ -2,22 +2,63 @@ package com.pjj.worktimer.worktimer;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class Generate_Project_Form extends AppCompatActivity {
+
+    int standartColorBackground;
+    int standartColorText;
+
+    EditText editName;
+    EditText editFirma;
+    EditText editStrasse;
+    EditText editNr;
+    EditText editLand;
+    EditText editUst_idnr;
+    EditText editStrnr;
+
+    TextView tvName;
+    TextView tvFirma;
+    TextView tvStrasse;
+    TextView tvNr;
+    TextView tvLand;
+    TextView tvUst_idnr;
+    TextView tvStrnr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
         setContentView(R.layout.activity_generate__project__form);
+
+        editName = (EditText) findViewById(R.id.editName);
+        editFirma = (EditText) findViewById(R.id.editFirma);
+        editStrasse = (EditText) findViewById(R.id.editStrasse);
+        editNr = (EditText) findViewById(R.id.editNr);
+        editLand = (EditText) findViewById(R.id.editLand);
+        editUst_idnr = (EditText) findViewById(R.id.editUst_idnr);
+        editStrnr = (EditText) findViewById(R.id.editSteuernummer);
+
+        tvName = (TextView) findViewById(R.id.textName);
+        tvFirma = (TextView) findViewById(R.id.textFirma);
+        tvStrasse = (TextView) findViewById(R.id.textStrasse);
+        tvNr = (TextView) findViewById(R.id.textNr);
+        tvLand = (TextView) findViewById(R.id.textLand);
+        tvUst_idnr = (TextView) findViewById(R.id.textUst_idnr);
+        tvStrnr = (TextView) findViewById(R.id.textSteuernummer);
+
+        standartColorText = tvName.getCurrentTextColor();
+        standartColorBackground = editFirma.getDrawingCacheBackgroundColor();
 
         Button btn = (Button) findViewById(R.id.btn);
         btn.setOnClickListener(onClick());
@@ -27,10 +68,13 @@ public class Generate_Project_Form extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putStringArrayListExtra("generate_project_form", readForm());
-                setResult(RESULT_OK, intent);
-                finish();
+                ArrayList<String> formData = readForm();
+                if(formData != null){
+                    Intent intent = new Intent();
+                    intent.putStringArrayListExtra("generate_project_form", formData);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         };
     }
@@ -38,13 +82,21 @@ public class Generate_Project_Form extends AppCompatActivity {
     private ArrayList<String> readForm(){
         ArrayList<String> form = new ArrayList<String>();
 
-        EditText editName = (EditText) findViewById(R.id.editName);
-        EditText editFirma = (EditText) findViewById(R.id.editFirma);
-        EditText editStrasse = (EditText) findViewById(R.id.editStrasse);
-        EditText editNr = (EditText) findViewById(R.id.editNr);
-        EditText editLand = (EditText) findViewById(R.id.editLand);
-        EditText editUst_idnr = (EditText) findViewById(R.id.editUst_idnr);
-        EditText editStrnr = (EditText) findViewById(R.id.editSteuernummer);
+        tvName.setTextColor(standartColorText);
+        tvFirma.setTextColor(standartColorText);
+        tvStrasse.setTextColor(standartColorText);
+        tvNr.setTextColor(standartColorText);
+        tvLand.setTextColor(standartColorText);
+        tvUst_idnr.setTextColor(standartColorText);
+        tvStrnr.setTextColor(standartColorText);
+
+        editName.setBackgroundColor(standartColorBackground);
+        editFirma.setBackgroundColor(standartColorBackground);
+        editStrasse.setBackgroundColor(standartColorBackground);
+        editNr.setBackgroundColor(standartColorBackground);
+        editLand.setBackgroundColor(standartColorBackground);
+        editUst_idnr.setBackgroundColor(standartColorBackground);
+        editStrnr.setBackgroundColor(standartColorBackground);
 
         String name = editName.getText().toString();
         String firma = editFirma.getText().toString();
@@ -62,11 +114,51 @@ public class Generate_Project_Form extends AppCompatActivity {
         form.add(ust_idnr);
         form.add(strnr);
 
+        int counter = 0;
+        boolean pass = true;
+        TextView tv;
+
         for (String f: form) {
-            if(f == null){
-                return null;
+            if(f.equals("")){
+                switch (counter){
+                    case 0:
+                        tvName.setTextColor(getResources().getColor(R.color.warning));
+                        editName.setBackgroundColor(getResources().getColor(R.color.warning));
+                        break;
+                    case 1:
+                        tvFirma.setTextColor(getResources().getColor(R.color.warning));
+                        editFirma.setBackgroundColor(getResources().getColor(R.color.warning));
+                        break;
+                    case 2:
+                        tvStrasse.setTextColor(getResources().getColor(R.color.warning));
+                        editStrasse.setBackgroundColor(getResources().getColor(R.color.warning));
+                        break;
+                    case 3:
+                        tvNr.setTextColor(getResources().getColor(R.color.warning));
+                        editNr.setBackgroundColor(getResources().getColor(R.color.warning));
+                        break;
+                    case 4:
+                        tvLand.setTextColor(getResources().getColor(R.color.warning));
+                        editLand.setBackgroundColor(getResources().getColor(R.color.warning));
+                        break;
+                    case 5:
+                        tvUst_idnr.setTextColor(getResources().getColor(R.color.warning));
+                        editUst_idnr.setBackgroundColor(getResources().getColor(R.color.warning));
+                        break;
+                    case 6:
+                        tvStrnr.setTextColor(getResources().getColor(R.color.warning));
+                        editStrnr.setBackgroundColor(getResources().getColor(R.color.warning));
+                        break;
+                }
+                pass = false;
             }
+            counter++;
         }
-        return form;
+        if(pass){
+            return form;
+        }else{
+            Toast.makeText(getBaseContext(), "Rot markierte Felder sind Pflichtfelder", Toast.LENGTH_SHORT).show();
+            return null;
+        }
     }
 }

@@ -54,8 +54,6 @@ public class Dashboard extends Fragment {
 
         relativeLayouts.add(newView);
 
-        Toast.makeText(getContext(),""+relativeLayouts.get(relativeLayouts.size()-1).getId(), Toast.LENGTH_SHORT).show();
-
         sort();
     }
 
@@ -94,7 +92,7 @@ public class Dashboard extends Fragment {
             }
 
             rl.setLayoutParams(rlLp);
-            rl.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+            rl.setBackgroundColor(getResources().getColor(R.color.project_view_color));
             relativeLayout.addView(rl);
             counter++;
         }

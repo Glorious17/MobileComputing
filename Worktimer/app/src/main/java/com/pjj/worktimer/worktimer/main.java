@@ -24,6 +24,7 @@ public class main extends AppCompatActivity {
     private ViewPagerAdapter vpa;
     private Dashboard dashboard;
     private FloatingActionButton fab;
+    TabLayout.Tab firstTab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,7 @@ public class main extends AppCompatActivity {
         vpa.addFragment("Einstellungen", new Einstellungen());
         viewPager.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPager);
-        TabLayout.Tab firstTab = tabLayout.getTabAt(1);
+        firstTab = tabLayout.getTabAt(1);
         firstTab.select();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(onclick());
@@ -61,7 +62,7 @@ public class main extends AppCompatActivity {
 
     public void writeFormData(ArrayList<String> formData){
         if(formData != null){
-            Toast.makeText(getBaseContext(), ""+formData.get(1), Toast.LENGTH_SHORT);
+            firstTab.select();
             dashboard.addProject(formData);
         }
     }

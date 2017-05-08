@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Generate_Project_Form"></activity>
+        <activity android:name=".Generate_Project_Form" />
+        <activity android:name=".ProjectView"></activity>
     </application>
 
 </manifest>
