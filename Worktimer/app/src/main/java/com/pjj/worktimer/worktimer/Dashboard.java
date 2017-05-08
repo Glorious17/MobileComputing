@@ -1,10 +1,14 @@
 package com.pjj.worktimer.worktimer;
 
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.v4.app.Fragment;
+import android.transition.TransitionManager;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +22,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static android.transition.TransitionManager.beginDelayedTransition;
 import static android.view.View.inflate;
 
 
@@ -41,6 +46,7 @@ public class Dashboard extends Fragment {
         //newView.setLayoutParams(new RelativeLayout.LayoutParams(dp(160), dp(160)));
         newView.setId(View.generateViewId());
         newView.setOnClickListener(onClick());
+        newView.setOnDragListener(onDrag());
 
         //Textview inside the previous Layout
         tv = new TextView(getContext());
@@ -53,6 +59,7 @@ public class Dashboard extends Fragment {
         newView.addView(tv);
 
         relativeLayouts.add(newView);
+        relativeLayout.addView(newView);
 
         sort();
     }
@@ -64,9 +71,11 @@ public class Dashboard extends Fragment {
         MarginLayoutParams mpl;
         RelativeLayout.LayoutParams rlLp;
 
-        relativeLayout.removeAllViews();
+        //relativeLayout.removeAllViews();
 
         for (RelativeLayout rl: relativeLayouts) {
+
+            TransitionManager.beginDelayedTransition(rl);
 
             mpl = new MarginLayoutParams(dp(160), dp(160));
 
@@ -93,7 +102,6 @@ public class Dashboard extends Fragment {
 
             rl.setLayoutParams(rlLp);
             rl.setBackgroundColor(getResources().getColor(R.color.project_view_color));
-            relativeLayout.addView(rl);
             counter++;
         }
     }
@@ -111,10 +119,28 @@ public class Dashboard extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                relativeLayouts.remove(relativeLayouts.indexOf(v));
-                sort();
+                Intent intent = new Intent(getContext(), ProjectView.class);
+                startActivity(intent);
             }
         };
+    }
+
+    private RelativeLayout.OnDragListener onDrag(){
+        return new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View v, DragEvent e) {
+                if(e.getAction() == DragEvent.ACTION_DRAG_ENTERED){
+                    removeProject(v);
+                }
+                return true;
+            }
+        };
+    }
+
+    public void removeProject(View view){
+        relativeLayout.removeView(view);
+        relativeLayouts.remove(relativeLayouts.indexOf(view));
+        sort();
     }
 
     @Override

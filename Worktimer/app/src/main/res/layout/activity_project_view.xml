@@ -7,6 +7,37 @@
     android:layout_height="match_parent"
     tools:context="com.pjj.worktimer.worktimer.ProjectView">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/project_toolbar">
 
+        <include
+            layout="@layout/toolbar_project_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout_project"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/project_view_color"
+            app:tabTextColor="@color/project_view_tab"
+            app:tabIndicatorColor="@color/project_view_tab"
+            app:tabSelectedTextColor="@color/project_view_tab"
+            app:tabGravity="fill"
+            app:tabIndicatorHeight="5dp">
+
+        </android.support.design.widget.TabLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewPager_project"
+        android:layout_below="@+id/project_toolbar">
+
+    </android.support.v4.view.ViewPager>
 
 </RelativeLayout>

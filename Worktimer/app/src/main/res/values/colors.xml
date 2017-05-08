@@ -7,4 +7,5 @@
     <color name="tabIndicatorColor">#000000</color>
     <color name="toolbarColor">#FFFFFF</color>
     <color name="project_view_color">#a7ffa7</color>
+    <color name="project_view_tab">#FFFFFF</color>
 </resources>

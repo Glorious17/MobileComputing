@@ -2,12 +2,17 @@
 <android.support.v7.widget.Toolbar
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/project_view_color"
-    android:minHeight="?attr/actionBarSize"
     android:fitsSystemWindows="true"
     android:id="@+id/toolBar_project_view">
 
+    <RelativeLayout
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@color/colorPrimary">
 
+    </RelativeLayout>
 
 </android.support.v7.widget.Toolbar>

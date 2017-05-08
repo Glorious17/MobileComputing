@@ -71,8 +71,6 @@ public class main extends AppCompatActivity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //dashboard.addProject();
                 Intent generateProjectForm = new Intent(getBaseContext(), Generate_Project_Form.class);
                 startActivityForResult(generateProjectForm, RequestCodes.GENERATE_PROJECT_FROM);
             }
