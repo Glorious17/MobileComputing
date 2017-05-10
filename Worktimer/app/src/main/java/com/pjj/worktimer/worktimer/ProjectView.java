@@ -8,11 +8,15 @@ import android.support.v7.widget.Toolbar;
 
 public class ProjectView extends AppCompatActivity {
 
+    private Project project;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        project = ProjectFolder.getProjectById(getIntent().getIntExtra("ProjectId", 0));
+
         setContentView(R.layout.activity_project_view);
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar_project_view));
+        getSupportActionBar().setTitle(project.getProjectInfo(Project.NAME));
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout_project);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager_project);
         ViewPagerAdapter vpa = new ViewPagerAdapter(getSupportFragmentManager());

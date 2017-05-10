@@ -54,17 +54,15 @@ public class main extends AppCompatActivity {
         switch (requestCode){
             case (RequestCodes.GENERATE_PROJECT_FROM):
                 if(resultCode == RESULT_OK){
-                    writeFormData(data.getStringArrayListExtra("generate_project_form"));
+                    writeFormData(data.getIntExtra("generate_project", 0));
                 }
                 break;
         }
     }
 
-    public void writeFormData(ArrayList<String> formData){
-        if(formData != null){
-            firstTab.select();
-            dashboard.addProject(formData);
-        }
+    public void writeFormData(int projectId){
+        firstTab.select();
+        dashboard.addProject(projectId);
     }
 
     public View.OnClickListener onclick(){

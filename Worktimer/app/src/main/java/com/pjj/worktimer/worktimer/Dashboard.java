@@ -35,15 +35,19 @@ public class Dashboard extends Fragment {
     private RelativeLayout relativeLayout;
     private MarginLayoutParams mpl;
     private ArrayList<RelativeLayout> relativeLayouts = new ArrayList<RelativeLayout>();
+    private ArrayList<Integer> projectIds = new ArrayList<Integer>();
+
+    private Project currentProject;
 
     private TextView tv;
 
     public Dashboard(){    }
 
-    public void addProject(ArrayList<String> formData){
+    public void addProject(int projectId){
+        currentProject = ProjectFolder.getProjectById(projectId);
+
         //surrounding Layout
         RelativeLayout newView = new RelativeLayout(getContext());
-        //newView.setLayoutParams(new RelativeLayout.LayoutParams(dp(160), dp(160)));
         newView.setId(View.generateViewId());
         newView.setOnClickListener(onClick());
         newView.setOnDragListener(onDrag());
@@ -51,13 +55,13 @@ public class Dashboard extends Fragment {
         //Textview inside the previous Layout
         tv = new TextView(getContext());
         tv.setId(View.generateViewId());
-        tv.setText(formData.get(0)+"\n" + formData.get(1) + "\n" + formData.get(2) + "\n" + formData.get(3)
-          + "\n" + formData.get(4) + "\n" + formData.get(5) + "\n" + formData.get(6));
+        tv.setText(currentProject.getProjectInfo(Project.NAME));
         tv.setGravity(Gravity.CENTER);
         mpl = new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         tv.setLayoutParams(mpl);
         newView.addView(tv);
 
+        projectIds.add(projectId);
         relativeLayouts.add(newView);
         relativeLayout.addView(newView);
 
@@ -120,6 +124,7 @@ public class Dashboard extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ProjectView.class);
+                intent.putExtra("ProjectId", projectIds.get(relativeLayouts.indexOf(v)));
                 startActivity(intent);
             }
         };
@@ -129,7 +134,7 @@ public class Dashboard extends Fragment {
         return new View.OnDragListener() {
             @Override
             public boolean onDrag(View v, DragEvent e) {
-                if(e.getAction() == DragEvent.ACTION_DRAG_ENTERED){
+                if(e.getAction() == DragEvent.ACTION_DRAG_STARTED){
                     removeProject(v);
                 }
                 return true;
@@ -139,7 +144,9 @@ public class Dashboard extends Fragment {
 
     public void removeProject(View view){
         relativeLayout.removeView(view);
-        relativeLayouts.remove(relativeLayouts.indexOf(view));
+        int id = relativeLayouts.indexOf(view);
+        relativeLayouts.remove(id);
+        relativeLayouts.remove(id);
         sort();
     }
 

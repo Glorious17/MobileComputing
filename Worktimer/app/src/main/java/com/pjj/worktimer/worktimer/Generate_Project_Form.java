@@ -70,8 +70,9 @@ public class Generate_Project_Form extends AppCompatActivity {
             public void onClick(View v) {
                 ArrayList<String> formData = readForm();
                 if(formData != null){
+                    Project p = new Project(formData);
                     Intent intent = new Intent();
-                    intent.putStringArrayListExtra("generate_project_form", formData);
+                    intent.putExtra("generate_project", p.getId());
                     setResult(RESULT_OK, intent);
                     finish();
                 }
