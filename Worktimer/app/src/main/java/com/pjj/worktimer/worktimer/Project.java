@@ -1,12 +1,13 @@
 package com.pjj.worktimer.worktimer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Jens on 08.05.2017.
  */
 
-public class Project {
+public class Project implements Serializable{
 
     private ArrayList<String> projectData;
     private int id;

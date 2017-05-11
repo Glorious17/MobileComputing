@@ -8,12 +8,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class main extends AppCompatActivity {
@@ -24,6 +27,7 @@ public class main extends AppCompatActivity {
     private ViewPagerAdapter vpa;
     private Dashboard dashboard;
     private FloatingActionButton fab;
+    private Save save;
     TabLayout.Tab firstTab;
 
     @Override
@@ -46,6 +50,18 @@ public class main extends AppCompatActivity {
         firstTab.select();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(onclick());
+        save = new Save();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            save.saveProjects(ProjectFolder.getProjectFolder(), getBaseContext());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -2,12 +2,14 @@ package com.pjj.worktimer.worktimer;
 
 
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.v4.app.Fragment;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.*;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static android.transition.TransitionManager.beginDelayedTransition;
@@ -34,12 +38,14 @@ public class Dashboard extends Fragment {
     private ScrollView scrollView;
     private RelativeLayout relativeLayout;
     private MarginLayoutParams mpl;
+    private RelativeLayout.LayoutParams rlLp;
     private ArrayList<RelativeLayout> relativeLayouts = new ArrayList<RelativeLayout>();
     private ArrayList<Integer> projectIds = new ArrayList<Integer>();
 
     private Project currentProject;
 
     private TextView tv;
+    private ImageView iv;
 
     public Dashboard(){    }
 
@@ -49,8 +55,7 @@ public class Dashboard extends Fragment {
         //surrounding Layout
         RelativeLayout newView = new RelativeLayout(getContext());
         newView.setId(View.generateViewId());
-        newView.setOnClickListener(onClick());
-        newView.setOnDragListener(onDrag());
+        newView.setOnClickListener(onClickToProject());
 
         //Textview inside the previous Layout
         tv = new TextView(getContext());
@@ -60,6 +65,18 @@ public class Dashboard extends Fragment {
         mpl = new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
         tv.setLayoutParams(mpl);
         newView.addView(tv);
+
+        iv = new ImageView(getContext());
+        iv.setId(View.generateViewId());
+        iv.setImageResource(R.drawable.delete);
+        mpl = new MarginLayoutParams(dp(30), dp(30));
+        mpl.setMargins(0,0,dp(10),dp(10));
+        rlLp = new RelativeLayout.LayoutParams(mpl);
+        rlLp.addRule(RelativeLayout.ALIGN_PARENT_END);
+        rlLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        iv.setLayoutParams(rlLp);
+        iv.setOnClickListener(onClickDelete());
+        newView.addView(iv);
 
         projectIds.add(projectId);
         relativeLayouts.add(newView);
@@ -72,8 +89,6 @@ public class Dashboard extends Fragment {
         int counter = 0;
         int below = 0;
         boolean right = false;
-        MarginLayoutParams mpl;
-        RelativeLayout.LayoutParams rlLp;
 
         //relativeLayout.removeAllViews();
 
@@ -119,7 +134,7 @@ public class Dashboard extends Fragment {
         return (int)((i * density) + 0.5);
     }
 
-    private RelativeLayout.OnClickListener onClick(){
+    private RelativeLayout.OnClickListener onClickToProject(){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,14 +145,11 @@ public class Dashboard extends Fragment {
         };
     }
 
-    private RelativeLayout.OnDragListener onDrag(){
-        return new View.OnDragListener() {
+    private ImageView.OnClickListener onClickDelete(){
+        return new View.OnClickListener() {
             @Override
-            public boolean onDrag(View v, DragEvent e) {
-                if(e.getAction() == DragEvent.ACTION_DRAG_STARTED){
-                    removeProject(v);
-                }
-                return true;
+            public void onClick(View v) {
+                removeProject((View) v.getParent());
             }
         };
     }
@@ -146,8 +158,34 @@ public class Dashboard extends Fragment {
         relativeLayout.removeView(view);
         int id = relativeLayouts.indexOf(view);
         relativeLayouts.remove(id);
-        relativeLayouts.remove(id);
+        ProjectFolder.removeProject(ProjectFolder.getProjectById(projectIds.get(id)));
+        projectIds.remove(id);
         sort();
+    }
+
+    private void readSavedProjects() {
+
+        ArrayList<Project> projects;
+        Save save = new Save();
+
+        try {
+
+            projects = save.readProjects(getContext());
+            if(projects == null){
+                return;
+            }
+            ProjectFolder.setProjectFolder(projects);
+            for (Project p : projects) {
+                if(p != null){
+                    addProject(p.getId());
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -158,7 +196,7 @@ public class Dashboard extends Fragment {
         relativeLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         scrollView = new ScrollView(getContext());
         scrollView.addView(relativeLayout);
-        //addProject();
+        readSavedProjects();
         return scrollView;
     };
 }

@@ -1,5 +1,7 @@
 package com.pjj.worktimer.worktimer;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -11,7 +13,21 @@ public class ProjectFolder {
     private static ArrayList<Project> projectFolder = new ArrayList<Project>();
 
     public static void addProject(Project project){
-        projectFolder.add(project);
+        if(projectFolder.contains(null)){
+            projectFolder.add(projectFolder.indexOf(null), project);
+            projectFolder.remove(projectFolder.indexOf(null));
+        }else{
+            projectFolder.add(project);
+        }
+    }
+
+    public static boolean removeProject(Project p){
+        if(projectFolder.contains(p)){
+            projectFolder.set(projectFolder.indexOf(p), null);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     public static Project getProjectById(int id){
@@ -22,7 +38,11 @@ public class ProjectFolder {
         return projectFolder.indexOf(project);
     }
 
-    public void setProjectFolder(ArrayList<Project> projectFolder){
+    public static void setProjectFolder(ArrayList<Project> projectFolder){
         ProjectFolder.projectFolder = projectFolder;
+    }
+
+    public static ArrayList getProjectFolder(){
+        return projectFolder;
     }
 }
