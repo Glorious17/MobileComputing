@@ -158,7 +158,7 @@ public class Dashboard extends Fragment {
         relativeLayout.removeView(view);
         int id = relativeLayouts.indexOf(view);
         relativeLayouts.remove(id);
-        ProjectFolder.removeProject(ProjectFolder.getProjectById(projectIds.get(id)));
+        ProjectFolder.removeProject(projectIds.get(id));
         projectIds.remove(id);
         sort();
     }

@@ -14,16 +14,21 @@ public class ProjectFolder {
 
     public static void addProject(Project project){
         if(projectFolder.contains(null)){
-            projectFolder.add(projectFolder.indexOf(null), project);
-            projectFolder.remove(projectFolder.indexOf(null));
+            projectFolder.set(projectFolder.indexOf(null), project);
         }else{
             projectFolder.add(project);
         }
     }
 
-    public static boolean removeProject(Project p){
+    public static boolean removeProject(int id){
+        Project p = getProjectById(id);
         if(projectFolder.contains(p)){
             projectFolder.set(projectFolder.indexOf(p), null);
+            cleanup();
+
+            for (Project i: projectFolder) {
+                Log.d("ProjectFolder", "removeProject: " + i);
+            }
             return true;
         }else {
             return false;
@@ -44,5 +49,18 @@ public class ProjectFolder {
 
     public static ArrayList getProjectFolder(){
         return projectFolder;
+    }
+
+    private static void cleanup(){
+        int counter = projectFolder.size()-1;
+        Project currentObject = projectFolder.get(counter);
+
+        while(counter >= 0 && currentObject == null){
+            projectFolder.remove(counter);
+            counter--;
+            if(counter >= 0){
+                currentObject = projectFolder.get(counter);
+            }
+        }
     }
 }
