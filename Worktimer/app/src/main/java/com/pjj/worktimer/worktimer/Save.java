@@ -20,13 +20,15 @@ import java.util.ArrayList;
 
 public class Save {
 
-    private FileOutputStream fos;
-    private ObjectOutputStream oos;
+    private static FileOutputStream fos;
+    private static ObjectOutputStream oos;
 
-    private FileInputStream fis;
-    private ObjectInputStream ois;
+    private static FileInputStream fis;
+    private static ObjectInputStream ois;
 
-    public void saveProjects(ArrayList<Project> projects, Context c) throws IOException {
+    public static void saveProjects(Context c) throws IOException {
+
+        ArrayList<Project> projects = ProjectFolder.getProjectFolder();
 
         File file = new File(c.getFilesDir(), "project.wk");
         if(file.exists()){
@@ -48,7 +50,7 @@ public class Save {
         fos.close();
     }
 
-    public ArrayList<Project> readProjects(Context c) throws IOException, ClassNotFoundException {
+    public static ArrayList<Project> readProjects(Context c) throws IOException, ClassNotFoundException {
 
         File file = new File(c.getFilesDir(), "project.wk");
 
@@ -70,4 +72,49 @@ public class Save {
         return null;
     }
 
+    public static void saveOrder(Context c, ArrayList<Integer> ids) throws IOException {
+
+        File file = new File(c.getFilesDir(), "order.wk");
+        if(file.exists()){
+            file.delete();
+        }
+        file.createNewFile();
+
+        fos = new FileOutputStream(file);
+        oos = new ObjectOutputStream(fos);
+
+        oos.writeInt(ids.size());
+
+        for (int i : ids) {
+
+            oos.writeInt(i);
+
+            Log.d("Save", "SaveOrder: " + i);
+
+        }
+
+        fos.close();
+    }
+
+    public static ArrayList<Integer> readOrder(Context c) throws IOException, ClassNotFoundException {
+
+        File file = new File(c.getFilesDir(), "order.wk");
+
+        if(c.getFilesDir().exists() && file.exists()){
+            ArrayList<Integer> output = new ArrayList<Integer>();
+            fis = new FileInputStream(file);
+            ois = new ObjectInputStream(fis);
+
+            int size = ois.readInt();
+
+            for(int i = 0; i < size; i++){
+                output.add(ois.readInt());
+            }
+            fis.close();
+
+            return output;
+        }
+        c.getFilesDir().mkdirs();
+        return null;
+    }
 }

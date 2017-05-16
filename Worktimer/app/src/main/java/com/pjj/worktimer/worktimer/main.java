@@ -27,7 +27,6 @@ public class main extends AppCompatActivity {
     private ViewPagerAdapter vpa;
     private Dashboard dashboard;
     private FloatingActionButton fab;
-    private Save save;
     TabLayout.Tab firstTab;
 
     @Override
@@ -35,35 +34,62 @@ public class main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //TextView logo = (TextView) findViewById(R.id.Logo);
         setContentView(R.layout.activity_main);
+
+        //Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+
+        //Tablayout um zwischen den einzelnen Fragmenten (Einstellungen, Dashboard, und Statistik) gewechselt werden kann
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+        //Der ViewPager wird für die Darstellung der Fragmente benötigt
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        //Der ViewPager-Adapter ist notwendig, da mehrere Fragmente generiert werden.
         vpa = new ViewPagerAdapter(getSupportFragmentManager());
+
+        //Jedes Fragment wird einzeln dem vpa hinzugefügt
         vpa.addFragment("Statistik", new Statistik());
+
+        //Dashboard besitzt, anders als die anderen beiden Fragmente, keine Layout-XML. Dieses Fragment wurde per Hand gecoded.
+        //Um später auf Funktionen zugreifen zu können wird hier eine globale Instanz von Dashboard erzeugt.
         dashboard = new Dashboard();
         vpa.addFragment("Dashboard", dashboard);
         vpa.addFragment("Einstellungen", new Einstellungen());
+
+        //Das TabLayout wird mit dem ViewPager-Adapter initialisiert
         viewPager.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPager);
+
+        //Der zweite Tab im tabLayout soll nach dem Start der App direkt ausgewählt sein
         firstTab = tabLayout.getTabAt(1);
         firstTab.select();
+
+        //Ein FloatingActionButton wird für das Hinzufügen von Projekten verwendet
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(onclick());
-        save = new Save();
     }
 
+
+    /*
+    Jedes Mal, wenn die Activity gestoppt wird, sollen alle Projekte gespeichert werden.
+    Die Methoden zum Speichern wurden in der Klasse "Save()" statisch angelegt.
+     */
     @Override
     protected void onStop() {
         super.onStop();
         try {
-            save.saveProjects(ProjectFolder.getProjectFolder(), getBaseContext());
-
+            Save.saveProjects(getBaseContext());
+            dashboard.saveOrder();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /*
+    Sobald der FloatingActionButton geklickt wird, startet eine die Activity Generate_Project_Form.
+    Beim finish() dieser Activity wird ein "Result" generiert, dass hier abgefangen wird.
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -81,6 +107,10 @@ public class main extends AppCompatActivity {
         dashboard.addProject(projectId);
     }
 
+    /*
+    Der OnClickListener für den FloatingActionButton. Es wird die Methode startActivityForResult() genutzt,
+    um die Daten aus dem Formular zu übergeben.
+     */
     public View.OnClickListener onclick(){
         return new View.OnClickListener() {
             @Override

@@ -47,8 +47,10 @@ public class Dashboard extends Fragment {
     private TextView tv;
     private ImageView iv;
 
-    public Dashboard(){    }
-
+    /*
+    Dashboard ist ein von Hand programmiertes Fragment.
+    Im eigentlichen Sinne wird in der "addProject()"-Methode nur ein Layout generiert.
+     */
     public void addProject(int projectId){
         currentProject = ProjectFolder.getProjectById(projectId);
 
@@ -57,7 +59,7 @@ public class Dashboard extends Fragment {
         newView.setId(View.generateViewId());
         newView.setOnClickListener(onClickToProject());
 
-        //Textview inside the previous Layout
+        //Textview inside the surrounding Layout
         tv = new TextView(getContext());
         tv.setId(View.generateViewId());
         tv.setText(currentProject.getProjectInfo(Project.NAME));
@@ -66,6 +68,7 @@ public class Dashboard extends Fragment {
         tv.setLayoutParams(mpl);
         newView.addView(tv);
 
+        //ImageView inside the surrounding Layout
         iv = new ImageView(getContext());
         iv.setId(View.generateViewId());
         iv.setImageResource(R.drawable.delete);
@@ -78,6 +81,7 @@ public class Dashboard extends Fragment {
         iv.setOnClickListener(onClickDelete());
         newView.addView(iv);
 
+        //
         projectIds.add(projectId);
         relativeLayouts.add(newView);
         relativeLayout.addView(newView);
@@ -163,14 +167,47 @@ public class Dashboard extends Fragment {
         sort();
     }
 
+    public void saveOrder(){
+        try {
+            Save.saveOrder(getContext(), projectIds);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readOrder(){
+        try {
+
+            int index;
+            RelativeLayout view;
+            ArrayList<Integer> newOrder = Save.readOrder(getContext());
+            Toast.makeText(getContext(), ""+ newOrder, Toast.LENGTH_SHORT).show();
+            if(newOrder != null){
+                for(int i : newOrder){
+                    index = projectIds.indexOf(i);
+
+                    view = relativeLayouts.remove(index);
+
+                    relativeLayouts.add(newOrder.indexOf(i), view);
+                }
+                projectIds = newOrder;
+                sort();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void readSavedProjects() {
 
         ArrayList<Project> projects;
-        Save save = new Save();
 
         try {
 
-            projects = save.readProjects(getContext());
+            projects = Save.readProjects(getContext());
             if(projects == null){
                 return;
             }
@@ -180,6 +217,7 @@ public class Dashboard extends Fragment {
                     addProject(p.getId());
                 }
             }
+            readOrder();
 
         } catch (IOException e) {
             e.printStackTrace();
