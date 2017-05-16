@@ -47,6 +47,7 @@ public class Save {
 
         }
 
+        oos.flush();
         fos.close();
     }
 
@@ -89,10 +90,8 @@ public class Save {
 
             oos.writeInt(i);
 
-            Log.d("Save", "SaveOrder: " + i);
-
         }
-
+        oos.flush();
         fos.close();
     }
 

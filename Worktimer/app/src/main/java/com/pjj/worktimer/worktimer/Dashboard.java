@@ -138,6 +138,16 @@ public class Dashboard extends Fragment {
         return (int)((i * density) + 0.5);
     }
 
+    public void select(View view){
+        int id = projectIds.remove(relativeLayouts.indexOf(view));
+        relativeLayouts.remove(view);
+
+        projectIds.add(0,id);
+        relativeLayouts.add(0,(RelativeLayout) view);
+
+        sort();
+    }
+
     private RelativeLayout.OnClickListener onClickToProject(){
         return new View.OnClickListener() {
             @Override
@@ -145,6 +155,7 @@ public class Dashboard extends Fragment {
                 Intent intent = new Intent(getContext(), ProjectView.class);
                 intent.putExtra("ProjectId", projectIds.get(relativeLayouts.indexOf(v)));
                 startActivity(intent);
+                select(v);
             }
         };
     }
@@ -179,17 +190,16 @@ public class Dashboard extends Fragment {
         try {
 
             int index;
-            RelativeLayout view;
+
+            ArrayList<RelativeLayout> newLayouts = new ArrayList<RelativeLayout>();
             ArrayList<Integer> newOrder = Save.readOrder(getContext());
-            Toast.makeText(getContext(), ""+ newOrder, Toast.LENGTH_SHORT).show();
+
             if(newOrder != null){
                 for(int i : newOrder){
                     index = projectIds.indexOf(i);
-
-                    view = relativeLayouts.remove(index);
-
-                    relativeLayouts.add(newOrder.indexOf(i), view);
+                    newLayouts.add(relativeLayouts.get(index));
                 }
+                relativeLayouts = newLayouts;
                 projectIds = newOrder;
                 sort();
             }
