@@ -27,4 +27,9 @@ public class ProjectView extends AppCompatActivity {
         viewPager.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+    @Override
+    public void finish(){
+        super.finish();
+    }
 }
