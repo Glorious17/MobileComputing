@@ -1,4 +1,4 @@
-package com.pjj.worktimer.worktimer;
+package com.pjj.worktimer.worktimer.mainScreen;
 
 
 import android.os.Bundle;
@@ -7,14 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.pjj.worktimer.worktimer.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Profil extends Fragment {
+public class Einstellungen extends Fragment {
 
 
-    public Profil() {
+    public Einstellungen() {
         // Required empty public constructor
     }
 
@@ -23,7 +25,7 @@ public class Profil extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profil, container, false);
+        return inflater.inflate(R.layout.fragment_einstellungen, container, false);
     }
 
 }

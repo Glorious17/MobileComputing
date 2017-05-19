@@ -1,33 +1,30 @@
-package com.pjj.worktimer.worktimer;
+package com.pjj.worktimer.worktimer.mainScreen;
 
 
 import android.content.Intent;
-import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.v4.app.Fragment;
 import android.transition.TransitionManager;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.*;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.pjj.worktimer.worktimer.projectScreen.Project;
+import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
+import com.pjj.worktimer.worktimer.projectScreen.ProjectView;
+import com.pjj.worktimer.worktimer.R;
+import com.pjj.worktimer.worktimer.helpClasses.Save;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import static android.transition.TransitionManager.beginDelayedTransition;
-import static android.view.View.inflate;
 
 
 /**
@@ -152,10 +149,10 @@ public class Dashboard extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                select(v);
                 Intent intent = new Intent(getContext(), ProjectView.class);
                 intent.putExtra("ProjectId", projectIds.get(relativeLayouts.indexOf(v)));
                 startActivity(intent);
-                select(v);
             }
         };
     }

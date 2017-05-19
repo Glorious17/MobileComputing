@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/dashboard"
-    tools:context="com.pjj.worktimer.worktimer.Dashboard">
+    tools:context="com.pjj.worktimer.worktimer.mainScreen.Dashboard">
 
     <RelativeLayout
         android:id="@+id/rl"

@@ -1,6 +1,5 @@
 package com.pjj.worktimer.worktimer;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -8,16 +7,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
+import com.pjj.worktimer.worktimer.form.Generate_Project_Form;
+import com.pjj.worktimer.worktimer.helpClasses.RequestCodes;
+import com.pjj.worktimer.worktimer.helpClasses.Save;
+import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
+import com.pjj.worktimer.worktimer.mainScreen.Dashboard;
+import com.pjj.worktimer.worktimer.mainScreen.Einstellungen;
+import com.pjj.worktimer.worktimer.mainScreen.Statistik;
+
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class main extends AppCompatActivity {
 

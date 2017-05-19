@@ -1,4 +1,4 @@
-package com.pjj.worktimer.worktimer;
+package com.pjj.worktimer.worktimer.projectScreen;
 
 import java.io.Serializable;
 import java.util.ArrayList;

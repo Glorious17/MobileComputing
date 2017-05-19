@@ -1,4 +1,4 @@
-package com.pjj.worktimer.worktimer;
+package com.pjj.worktimer.worktimer.helpClasses;
 
 /**
  * Created by Jens on 06.05.2017.

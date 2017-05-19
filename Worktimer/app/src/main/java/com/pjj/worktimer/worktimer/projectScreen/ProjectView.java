@@ -1,10 +1,17 @@
-package com.pjj.worktimer.worktimer;
+package com.pjj.worktimer.worktimer.projectScreen;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+
+import com.pjj.worktimer.worktimer.R;
+import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
+import com.pjj.worktimer.worktimer.projectScreen.fragments.Export;
+import com.pjj.worktimer.worktimer.projectScreen.fragments.Profil;
+import com.pjj.worktimer.worktimer.projectScreen.fragments.Statistik_Project;
+import com.pjj.worktimer.worktimer.projectScreen.fragments.Work;
 
 public class ProjectView extends AppCompatActivity {
 
@@ -28,8 +35,4 @@ public class ProjectView extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public void finish(){
-        super.finish();
-    }
 }

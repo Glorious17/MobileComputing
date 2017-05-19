@@ -1,17 +1,16 @@
-package com.pjj.worktimer.worktimer;
+package com.pjj.worktimer.worktimer.helpClasses;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
+
+import com.pjj.worktimer.worktimer.projectScreen.Project;
+import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
