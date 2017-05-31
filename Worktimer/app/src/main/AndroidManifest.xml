@@ -19,7 +19,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".form.Generate_Project_Form" />
-        <activity android:name=".projectScreen.ProjectView"></activity>
+        <activity android:name=".projectScreen.ProjectView" />
+        <activity
+            android:name=".login.Login"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
     </application>
 
 </manifest>

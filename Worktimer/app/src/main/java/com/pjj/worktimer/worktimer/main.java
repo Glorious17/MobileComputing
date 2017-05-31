@@ -7,13 +7,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.pjj.worktimer.worktimer.form.Generate_Project_Form;
 import com.pjj.worktimer.worktimer.helpClasses.RequestCodes;
 import com.pjj.worktimer.worktimer.helpClasses.Save;
 import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
+import com.pjj.worktimer.worktimer.login.Login;
 import com.pjj.worktimer.worktimer.mainScreen.Dashboard;
 import com.pjj.worktimer.worktimer.mainScreen.Einstellungen;
 import com.pjj.worktimer.worktimer.mainScreen.Statistik;
@@ -22,13 +23,18 @@ import java.io.IOException;
 
 public class main extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-    private ViewPagerAdapter vpa;
     private Dashboard dashboard;
     private FloatingActionButton fab;
-    TabLayout.Tab firstTab;
+    private TextView login;
+    private TabLayout tabLayout;
+    private TabLayout.Tab firstTab;
+    private Toolbar toolbar;
+    private ViewPager viewPager;
+    private ViewPagerAdapter vpa;
+
+    /*------------------------------------*/
+    /*-----Override super()-functions-----*/
+    /*------------------------------------*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +74,11 @@ public class main extends AppCompatActivity {
 
         //Ein FloatingActionButton wird für das Hinzufügen von Projekten verwendet
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(onclick());
+        fab.setOnClickListener(onClickForm());
+
+        //Ein Listener für die TextView-Resource "Login"
+        login = (TextView) findViewById(R.id.Login);
+        login.setOnClickListener(onClickLogin());
     }
 
 
@@ -88,7 +98,7 @@ public class main extends AppCompatActivity {
     }
 
     /*
-    Sobald der FloatingActionButton geklickt wird, startet eine die Activity Generate_Project_Form.
+    Sobald der FloatingActionButton geklickt wird, startet die Activity Generate_Project_Form.
     Beim finish() dieser Activity wird ein "Result" generiert, dass hier abgefangen wird.
      */
     @Override
@@ -103,16 +113,15 @@ public class main extends AppCompatActivity {
         }
     }
 
-    public void writeFormData(int projectId){
-        firstTab.select();
-        dashboard.addProject(projectId);
-    }
+    /*------------------------------------*/
+    /*--------------Listener--------------*/
+    /*------------------------------------*/
 
     /*
     Der OnClickListener für den FloatingActionButton. Es wird die Methode startActivityForResult() genutzt,
     um die Daten aus dem Formular zu übergeben.
      */
-    public View.OnClickListener onclick(){
+    public View.OnClickListener onClickForm(){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,8 +130,23 @@ public class main extends AppCompatActivity {
             }
         };
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+
+    public View.OnClickListener onClickLogin(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent login = new Intent(getBaseContext(), Login.class);
+                startActivity(login);
+            }
+        };
+    }
+
+    /*------------------------------------*/
+    /*-----------Help functions-----------*/
+    /*------------------------------------*/
+
+    public void writeFormData(int projectId){
+        firstTab.select();
+        dashboard.addProject(projectId);
     }
 }

@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import static android.transition.TransitionManager.beginDelayedTransition;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class Dashboard extends Fragment {
 
     private ScrollView scrollView;
@@ -44,10 +41,34 @@ public class Dashboard extends Fragment {
     private TextView tv;
     private ImageView iv;
 
-    /*
-    Dashboard ist ein von Hand programmiertes Fragment.
-    Im eigentlichen Sinne wird in der "addProject()"-Methode nur ein Layout generiert.
-     */
+    /*------------------------------------*/
+    /*-----Override super()-functions-----*/
+    /*------------------------------------*/
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        relativeLayout = new RelativeLayout(getContext());
+        relativeLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        scrollView = new ScrollView(getContext());
+        scrollView.addView(relativeLayout);
+        readSavedProjects();
+        return scrollView;
+    };
+
+    /*------------------------------------*/
+    /*----------GETTER & SETTER-----------*/
+    /*------------------------------------*/
+
+    public int getId(int position){
+        return relativeLayouts.get(position).getId();
+    }
+
+    /*------------------------------------*/
+    /*---------Program-Functions----------*/
+    /*------------------------------------*/
+
     public void addProject(int projectId){
         currentProject = ProjectFolder.getProjectById(projectId);
 
@@ -91,8 +112,6 @@ public class Dashboard extends Fragment {
         int below = 0;
         boolean right = false;
 
-        //relativeLayout.removeAllViews();
-
         for (RelativeLayout rl: relativeLayouts) {
 
             TransitionManager.beginDelayedTransition(rl);
@@ -126,15 +145,6 @@ public class Dashboard extends Fragment {
         }
     }
 
-    public int getId(int position){
-        return relativeLayouts.get(position).getId();
-    }
-
-    public int dp(int i) {
-        float density = getContext().getResources().getDisplayMetrics().density;
-        return (int)((i * density) + 0.5);
-    }
-
     public void select(View view){
         int id = projectIds.remove(relativeLayouts.indexOf(view));
         relativeLayouts.remove(view);
@@ -144,6 +154,19 @@ public class Dashboard extends Fragment {
 
         sort();
     }
+
+    public void removeProject(View view){
+        relativeLayout.removeView(view);
+        int id = relativeLayouts.indexOf(view);
+        relativeLayouts.remove(id);
+        ProjectFolder.removeProject(projectIds.get(id));
+        projectIds.remove(id);
+        sort();
+    }
+
+    /*------------------------------------*/
+    /*--------------Listener--------------*/
+    /*------------------------------------*/
 
     private RelativeLayout.OnClickListener onClickToProject(){
         return new View.OnClickListener() {
@@ -166,14 +189,9 @@ public class Dashboard extends Fragment {
         };
     }
 
-    public void removeProject(View view){
-        relativeLayout.removeView(view);
-        int id = relativeLayouts.indexOf(view);
-        relativeLayouts.remove(id);
-        ProjectFolder.removeProject(projectIds.get(id));
-        projectIds.remove(id);
-        sort();
-    }
+    /*------------------------------------*/
+    /*-------------Persistence------------*/
+    /*------------------------------------*/
 
     public void saveOrder(){
         try {
@@ -233,15 +251,12 @@ public class Dashboard extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        relativeLayout = new RelativeLayout(getContext());
-        relativeLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        scrollView = new ScrollView(getContext());
-        scrollView.addView(relativeLayout);
-        readSavedProjects();
-        return scrollView;
-    };
+    /*------------------------------------*/
+    /*-----------Help functions-----------*/
+    /*------------------------------------*/
+
+    public int dp(int i) {
+        float density = getContext().getResources().getDisplayMetrics().density;
+        return (int)((i * density) + 0.5);
+    }
 }
