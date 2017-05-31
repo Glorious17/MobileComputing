@@ -3,6 +3,8 @@
     package="com.pjj.worktimer.worktimer">
 
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,9 +23,11 @@
         <activity android:name=".form.Generate_Project_Form" />
         <activity android:name=".projectScreen.ProjectView" />
         <activity
-            android:name=".login.Login"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:name=".form.Login"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".form.Register"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

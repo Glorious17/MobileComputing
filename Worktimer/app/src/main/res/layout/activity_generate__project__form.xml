@@ -162,6 +162,7 @@
             android:textColor="@color/toolbarColor"
             android:background="@color/tabIndicatorColor"
             android:layout_below="@+id/editSteuernummer"
+            android:textAllCaps="false"
             android:text="Speichern"/>
     </RelativeLayout>
 

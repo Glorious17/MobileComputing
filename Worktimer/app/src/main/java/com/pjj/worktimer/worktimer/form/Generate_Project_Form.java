@@ -17,30 +17,31 @@ import java.util.ArrayList;
 
 public class Generate_Project_Form extends AppCompatActivity {
 
-    int standartColorBackground;
-    int standartColorText;
+    private int standartColorBackground;
+    private int standartColorText;
 
-    EditText editName;
-    EditText editFirma;
-    EditText editStrasse;
-    EditText editNr;
-    EditText editLand;
-    EditText editUst_idnr;
-    EditText editStrnr;
+    private EditText editName;
+    private EditText editFirma;
+    private EditText editStrasse;
+    private EditText editNr;
+    private EditText editLand;
+    private EditText editUst_idnr;
+    private EditText editStrnr;
 
-    TextView tvName;
-    TextView tvFirma;
-    TextView tvStrasse;
-    TextView tvNr;
-    TextView tvLand;
-    TextView tvUst_idnr;
-    TextView tvStrnr;
+    private TextView tvName;
+    private TextView tvFirma;
+    private TextView tvStrasse;
+    private TextView tvNr;
+    private TextView tvLand;
+    private TextView tvUst_idnr;
+    private TextView tvStrnr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
         setContentView(R.layout.activity_generate__project__form);
+        ((TextView) findViewById(R.id.Login)).setVisibility(View.GONE);
 
         editName = (EditText) findViewById(R.id.editName);
         editFirma = (EditText) findViewById(R.id.editFirma);

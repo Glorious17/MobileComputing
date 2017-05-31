@@ -41,9 +41,7 @@
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/tabIndicatorColor"
             app:tabBackground="@color/toolbarColor"
-            app:tabIndicatorHeight="5dp"
-            >
-
+            app:tabIndicatorHeight="5dp">
         </android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
