@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="warning">#ff3737</color>
+    <color name="accepted">#51d200</color>
     <color name="tabIndicatorColor">#000000</color>
     <color name="toolbarColor">#FFFFFF</color>
     <color name="project_view_color">#a7ffa7</color>

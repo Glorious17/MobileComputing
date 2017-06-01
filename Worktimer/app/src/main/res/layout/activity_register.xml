@@ -7,6 +7,7 @@
     tools:context="com.pjj.worktimer.worktimer.form.Register">
 
     <RelativeLayout
+        android:id="@+id/rlReg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -20,6 +21,25 @@
             android:layout_marginBottom="16dp"
             android:singleLine="true"
             android:hint="Email"/>
+
+        <ProgressBar
+            android:id="@+id/progressReg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            style="@android:style/Widget.ProgressBar.Small"
+            android:layout_below="@+id/editRegEmail"
+            />
+
+        <TextView
+            android:id="@+id/textRegUserExists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/warning"
+            android:visibility="gone"
+            android:text="Es existiert bereits ein Benutzer unter dieser Email-Adresse"
+            android:layout_below="@+id/editRegEmail"/>
 
         <EditText
             android:id="@+id/editRegPassword"
@@ -43,6 +63,41 @@
 
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/rlRegComplete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textRegComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="20dp"/>
+
+        <Button
+            android:id="@+id/btnRegComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:text="Ok"
+            android:layout_below="@+id/textRegComplete"/>
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/waitForRegister"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
@@ -51,6 +106,7 @@
         android:background="#CC000000"
         android:layout_alignParentBottom="true"
         android:textAllCaps="false"
-        android:text="Registrieren"/>
+        android:enabled="false"
+        android:text="Registrieren" />
 
 </RelativeLayout>
