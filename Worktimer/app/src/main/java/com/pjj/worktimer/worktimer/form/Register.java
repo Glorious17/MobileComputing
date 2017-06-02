@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -152,7 +153,10 @@ public class Register extends AppCompatActivity {
                     btnRegister.setVisibility(View.GONE);
                     waitForRegister.setVisibility(View.VISIBLE);
                     BackgroundRegister br = new BackgroundRegister();
-                    br.execute(textEmail, textPassword);
+                    String data = localURLEncoder("email") + "=" + localURLEncoder(textEmail) + "&" +
+                            localURLEncoder("password") + "=" + localURLEncoder(textPassword);
+                    String url = "http://zander-bros.de/worktimer/add_user.php";
+                    br.execute(url, data, BackgroundRegister.ADD_USER);
                 }
             }
         };
@@ -181,9 +185,10 @@ public class Register extends AppCompatActivity {
                     p.addRule(RelativeLayout.BELOW, R.id.progressReg);
                     password.setLayoutParams(p);
 
-                    BackgroundCheckUser bcu = new BackgroundCheckUser();
-                    bcu.execute(textEmail);
-
+                    BackgroundRegister br = new BackgroundRegister();
+                    String data = localURLEncoder("email") + "=" + localURLEncoder(textEmail);
+                    String url = "http://zander-bros.de/worktimer/is_in_user.php";
+                    br.execute(url, data, BackgroundRegister.CHECK_USER);
                 }
             }
         };
@@ -233,35 +238,48 @@ public class Register extends AppCompatActivity {
         return (int)((i * density) + 0.5);
     }
 
+    public String localURLEncoder(String text){
+        try {
+            return(URLEncoder.encode(text, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     /*------------------------------------*/
     /*-----------Backgroundtasks----------*/
     /*------------------------------------*/
 
-    class BackgroundCheckUser extends AsyncTask<String,Void,Boolean> {
+    class BackgroundRegister extends AsyncTask<String,Void,Boolean> {
 
-        String jasonUrl;
-        String JASON_STRING;
+        public static final String ADD_USER = "0";
+        public static final String CHECK_USER = "1";
 
-        @Override
-        protected void onPreExecute() {
-            jasonUrl = "http://zander-bros.de/worktimer/is_in_user.php";
-        }
+        private boolean result;
+        private int operation;
 
         @Override
         protected Boolean doInBackground(String... args) {
-            String data;
-            String email = args[0];
+            String serverUrl = args[0];
+            String data = args[1];
+            operation = Integer.parseInt(args[2]);
 
             try{
 
-                URL url = new URL(jasonUrl);
+                URL url = new URL(serverUrl);
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
                 httpURLConnection.setDoInput(true);
+                httpURLConnection.setDoOutput(true);
 
-                output(httpURLConnection, email);
+                Log.d("TAG", "doInBackground: " + url);
+
+                output(httpURLConnection, data);
 
                 data = input(httpURLConnection);
+
+                Log.d("TAG", "doInBackground: " + data);
 
                 httpURLConnection.disconnect();
 
@@ -280,19 +298,27 @@ public class Register extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Boolean bool) {
-            if(bool){
-                setUserIsNotAvailable();
-            }else{
-                setUserIsAvailable();
+            switch (operation){
+                case 0:
+                    if(bool){
+                        complete();
+                    }
+                    break;
+                case 1:
+                    if(bool){
+                        setUserIsAvailable();
+                    }else{
+                        setUserIsNotAvailable();
+
+                    }
+                    break;
             }
         }
 
-        private void output(HttpURLConnection httpURLConnection, String... args) throws IOException {
+        private void output(HttpURLConnection httpURLConnection, String data) throws IOException {
             OutputStream outputStream = httpURLConnection.getOutputStream();
 
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "utf-8"));
-
-            String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(args[0], "utf-8");
 
             bufferedWriter.write(data);
             bufferedWriter.flush();
@@ -302,6 +328,7 @@ public class Register extends AppCompatActivity {
         }
 
         private String input(HttpURLConnection httpURLConnection) throws IOException {
+            String JASON_STRING;
             InputStream input = httpURLConnection.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
             StringBuilder stringBuilder = new StringBuilder();
@@ -317,63 +344,6 @@ public class Register extends AppCompatActivity {
         private boolean parseJSON(String data) throws JSONException {
             JSONObject jO = new JSONObject(data);
             return jO.getBoolean("insideUser");
-        }
-    }
-
-    class BackgroundRegister extends AsyncTask<String,Void,Boolean> {
-
-        String registerUrl;
-
-        @Override
-        protected void onPreExecute() {
-            registerUrl = "http://zander-bros.de/worktimer/add_user.php";
-        }
-
-        @Override
-        protected Boolean doInBackground(String... args) {
-            String email, password;
-
-            email = args[0];
-            password = args[1];
-
-            try{
-
-                URL url = new URL(registerUrl);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "utf-8"));
-
-                String data = URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "utf-8") + "&" +
-                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "utf-8");
-
-                bufferedWriter.write(data);
-                bufferedWriter.flush();
-
-                bufferedWriter.close();
-                outputStream.close();
-                InputStream input = httpURLConnection.getInputStream();
-                input.close();
-                httpURLConnection.disconnect();
-
-                return true;
-
-            }catch (MalformedURLException e){
-                e.printStackTrace();
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean bool) {
-            if(bool){
-                complete();
-            }
         }
     }
 
