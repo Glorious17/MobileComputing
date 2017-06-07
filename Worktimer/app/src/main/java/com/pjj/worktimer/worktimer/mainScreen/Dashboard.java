@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.projectScreen.Project;
 import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
 import com.pjj.worktimer.worktimer.projectScreen.ProjectView;
@@ -90,8 +91,8 @@ public class Dashboard extends Fragment {
         iv = new ImageView(getContext());
         iv.setId(View.generateViewId());
         iv.setImageResource(R.drawable.delete);
-        mpl = new MarginLayoutParams(dp(30), dp(30));
-        mpl.setMargins(0,0,dp(10),dp(10));
+        mpl = new MarginLayoutParams(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),30));
+        mpl.setMargins(0,0,HelpFunctions.dp(getContext(),10),HelpFunctions.dp(getContext(),10));
         rlLp = new RelativeLayout.LayoutParams(mpl);
         rlLp.addRule(RelativeLayout.ALIGN_PARENT_END);
         rlLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -116,13 +117,13 @@ public class Dashboard extends Fragment {
 
             TransitionManager.beginDelayedTransition(rl);
 
-            mpl = new MarginLayoutParams(dp(160), dp(160));
+            mpl = new MarginLayoutParams(HelpFunctions.dp(getContext(),160), HelpFunctions.dp(getContext(),160));
 
             if(!(counter % 2 == 0)){
-                mpl.setMargins(0, dp(10), dp(30), dp(10));
+                mpl.setMargins(0, HelpFunctions.dp(getContext(),10), HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10));
                 right = true;
             }else{
-                mpl.setMargins(dp(30), dp(10), 0, dp(10));
+                mpl.setMargins(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10), 0, HelpFunctions.dp(getContext(),10));
                 right = false;
             }
 
@@ -249,14 +250,5 @@ public class Dashboard extends Fragment {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    /*------------------------------------*/
-    /*-----------Help functions-----------*/
-    /*------------------------------------*/
-
-    public int dp(int i) {
-        float density = getContext().getResources().getDisplayMetrics().density;
-        return (int)((i * density) + 0.5);
     }
 }

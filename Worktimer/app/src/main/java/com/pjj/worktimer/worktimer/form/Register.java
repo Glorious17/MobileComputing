@@ -1,11 +1,8 @@
 package com.pjj.worktimer.worktimer.form;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,10 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pjj.worktimer.worktimer.R;
+import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
+import com.pjj.worktimer.worktimer.helpClasses.URLs;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,11 +26,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 public class Register extends AppCompatActivity {
 
@@ -153,10 +149,9 @@ public class Register extends AppCompatActivity {
                     btnRegister.setVisibility(View.GONE);
                     waitForRegister.setVisibility(View.VISIBLE);
                     BackgroundRegister br = new BackgroundRegister();
-                    String data = localURLEncoder("email") + "=" + localURLEncoder(textEmail) + "&" +
-                            localURLEncoder("password") + "=" + localURLEncoder(textPassword);
-                    String url = "http://zander-bros.de/worktimer/add_user.php";
-                    br.execute(url, data, BackgroundRegister.ADD_USER);
+                    String data = HelpFunctions.localURLEncoder("email") + "=" + HelpFunctions.localURLEncoder(textEmail) + "&" +
+                            HelpFunctions.localURLEncoder("password") + "=" + HelpFunctions.localURLEncoder(textPassword);
+                    br.execute(URLs.REGISTER, data, BackgroundRegister.ADD_USER);
                 }
             }
         };
@@ -181,14 +176,14 @@ public class Register extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
-                    p.setMargins(0,0,0,dp(16));
+                    p.setMargins(0,0,0,HelpFunctions.dp(getBaseContext(),16));
                     p.addRule(RelativeLayout.BELOW, R.id.progressReg);
                     password.setLayoutParams(p);
 
                     BackgroundRegister br = new BackgroundRegister();
-                    String data = localURLEncoder("email") + "=" + localURLEncoder(textEmail);
-                    String url = "http://zander-bros.de/worktimer/is_in_user.php";
-                    br.execute(url, data, BackgroundRegister.CHECK_USER);
+                    String data = HelpFunctions.localURLEncoder("email") + "=" + HelpFunctions.localURLEncoder(textEmail);
+
+                    br.execute(URLs.CHECK_USER, data, BackgroundRegister.CHECK_USER);
                 }
             }
         };
@@ -204,7 +199,7 @@ public class Register extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        p.setMargins(0,0,0,dp(16));
+        p.setMargins(0,0,0,HelpFunctions.dp(getBaseContext(), 16));
         p.addRule(RelativeLayout.BELOW, R.id.editRegEmail);
         password.setLayoutParams(p);
         btnRegister.setEnabled(true);
@@ -216,7 +211,7 @@ public class Register extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        p.setMargins(0,0,0,dp(16));
+        p.setMargins(0,0,0,HelpFunctions.dp(getBaseContext(), 16));
         p.addRule(RelativeLayout.BELOW, R.id.textRegUserExists);
         password.setLayoutParams(p);
         btnRegister.setEnabled(false);
@@ -229,22 +224,11 @@ public class Register extends AppCompatActivity {
                 " wurde eine Verifizierungs-Email gesandt. Folgen Sie den Anweisungen. Vielen Dank!");
     }
 
-    /*------------------------------------*/
-    /*-----------Help functions-----------*/
-    /*------------------------------------*/
-
-    public int dp(int i) {
-        float density = getBaseContext().getResources().getDisplayMetrics().density;
-        return (int)((i * density) + 0.5);
-    }
-
-    public String localURLEncoder(String text){
-        try {
-            return(URLEncoder.encode(text, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return null;
+    private void printErrorMessage(){
+        Toast.makeText(getBaseContext(), "Irgendetwas ist schief gelaufen, versuchen Sie es später erneut", Toast.LENGTH_SHORT).show();
+        waitForRegister.setVisibility(View.GONE);
+        rlReg.setVisibility(View.VISIBLE);
+        btnRegister.setVisibility(View.VISIBLE);
     }
 
     /*------------------------------------*/
@@ -256,7 +240,6 @@ public class Register extends AppCompatActivity {
         public static final String ADD_USER = "0";
         public static final String CHECK_USER = "1";
 
-        private boolean result;
         private int operation;
 
         @Override
@@ -273,13 +256,9 @@ public class Register extends AppCompatActivity {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setDoOutput(true);
 
-                Log.d("TAG", "doInBackground: " + url);
-
                 output(httpURLConnection, data);
 
                 data = input(httpURLConnection);
-
-                Log.d("TAG", "doInBackground: " + data);
 
                 httpURLConnection.disconnect();
 
@@ -302,6 +281,8 @@ public class Register extends AppCompatActivity {
                 case 0:
                     if(bool){
                         complete();
+                    }else{
+                        printErrorMessage();
                     }
                     break;
                 case 1:
@@ -309,7 +290,6 @@ public class Register extends AppCompatActivity {
                         setUserIsAvailable();
                     }else{
                         setUserIsNotAvailable();
-
                     }
                     break;
             }
