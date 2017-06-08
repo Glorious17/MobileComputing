@@ -7,6 +7,39 @@
     tools:context=".form.Login">
 
 
+    <RelativeLayout
+        android:id="@+id/logErrorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/warning">
+
+        <TextView
+            android:id="@+id/logErrorMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="15dp"
+            android:textColor="@color/colorWhite"
+            android:layout_toLeftOf="@+id/logCloseImg" />
+
+        <ImageView
+            android:id="@+id/logCloseImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/close"
+            />
+
+    </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +83,7 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/toolbarColor"
+                android:textColor="@color/colorWhite"
                 android:background="#CC000000"
                 android:layout_alignParentBottom="true"
                 android:textAllCaps="false"

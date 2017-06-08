@@ -105,11 +105,15 @@ public class main extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            case (RequestCodes.GENERATE_PROJECT_FROM):
+            case (RequestCodes.GENERATE_PROJECT_FORM):
                 if(resultCode == RESULT_OK){
                     writeFormData(data.getIntExtra("generate_project", 0));
                 }
                 break;
+            case (RequestCodes.LOGIN):
+                if(resultCode == RESULT_OK){
+                    login.setVisibility(View.GONE);
+                }
         }
     }
 
@@ -126,7 +130,7 @@ public class main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent generateProjectForm = new Intent(getBaseContext(), Generate_Project_Form.class);
-                startActivityForResult(generateProjectForm, RequestCodes.GENERATE_PROJECT_FROM);
+                startActivityForResult(generateProjectForm, RequestCodes.GENERATE_PROJECT_FORM);
             }
         };
     }
@@ -136,7 +140,7 @@ public class main extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent login = new Intent(getBaseContext(), Login.class);
-                startActivity(login);
+                startActivityForResult(login, RequestCodes.LOGIN);
             }
         };
     }

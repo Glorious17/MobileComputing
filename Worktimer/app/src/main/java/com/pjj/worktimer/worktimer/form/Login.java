@@ -8,12 +8,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.helpClasses.URLs;
+import com.pjj.worktimer.worktimer.projectScreen.Project;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,10 +35,15 @@ import java.util.ArrayList;
 
 public class Login extends AppCompatActivity {
 
+    private RelativeLayout errorLayout;
+
     private EditText emailAddress;
     private EditText password;
 
     private TextView register;
+    private TextView errorMsg;
+
+    private ImageView closeImg;
 
     private Button btnLogin;
 
@@ -48,14 +56,38 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        errorLayout = (RelativeLayout) findViewById(R.id.logErrorLayout);
+        errorLayout.setVisibility(View.GONE);
+
         register = (TextView) findViewById(R.id.textLogRegister);
         register.setOnClickListener(onClickRegister());
+
+        errorMsg = (TextView) findViewById(R.id.logErrorMsg);
 
         emailAddress = (EditText) findViewById(R.id.editLogEmail);
         password = (EditText) findViewById(R.id.editLogPassword);
 
+        closeImg = (ImageView) findViewById(R.id.logCloseImg);
+        closeImg.setOnClickListener(closeErrorMsg());
+
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(onClickLogin());
+    }
+
+    /*------------------------------------*/
+    /*---------Program-Functions----------*/
+    /*------------------------------------*/
+
+    private void complete(){
+        Intent intent = new Intent();
+        intent.putExtra("login", true);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    private void showError(String error){
+        errorMsg.setText(error);
+        errorLayout.setVisibility(View.VISIBLE);
     }
 
     /*------------------------------------*/
@@ -84,6 +116,15 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent login = new Intent(getBaseContext(), Register.class);
                 startActivity(login);
+            }
+        };
+    }
+
+    public View.OnClickListener closeErrorMsg(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                errorLayout.setVisibility(View.GONE);
             }
         };
     }
@@ -131,9 +172,10 @@ public class Login extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Object> response) {
             if((boolean) response.get(0)){
-                Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_SHORT).show();
+                complete();
             }else{
-                Toast.makeText(getBaseContext(), (String) response.get(1), Toast.LENGTH_SHORT).show();
+
+                showError((String) response.get(1));
             }
         }
 

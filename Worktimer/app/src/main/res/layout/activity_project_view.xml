@@ -22,9 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/project_view_color"
-            app:tabTextColor="@color/project_view_tab"
-            app:tabIndicatorColor="@color/project_view_tab"
-            app:tabSelectedTextColor="@color/project_view_tab"
+            app:tabTextColor="@color/colorWhite"
+            app:tabIndicatorColor="@color/colorWhite"
+            app:tabSelectedTextColor="@color/colorWhite"
             app:tabGravity="fill"
             app:tabIndicatorHeight="5dp">
 
