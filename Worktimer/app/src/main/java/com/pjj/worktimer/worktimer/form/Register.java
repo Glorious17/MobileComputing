@@ -150,7 +150,8 @@ public class Register extends AppCompatActivity {
                     waitForRegister.setVisibility(View.VISIBLE);
                     BackgroundRegister br = new BackgroundRegister();
                     String data = HelpFunctions.localURLEncoder("email") + "=" + HelpFunctions.localURLEncoder(textEmail) + "&" +
-                            HelpFunctions.localURLEncoder("password") + "=" + HelpFunctions.localURLEncoder(textPassword);
+                            HelpFunctions.localURLEncoder("password") + "=" +
+                            HelpFunctions.localURLEncoder(HelpFunctions.md5(textPassword));
                     br.execute(URLs.REGISTER, data, BackgroundRegister.ADD_USER);
                 }
             }

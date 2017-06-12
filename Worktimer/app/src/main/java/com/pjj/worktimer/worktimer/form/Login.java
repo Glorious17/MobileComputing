@@ -103,7 +103,7 @@ public class Login extends AppCompatActivity {
                 String data = HelpFunctions.localURLEncoder("email") + "=" +
                         HelpFunctions.localURLEncoder(emailAddress.getText().toString()) + "&" +
                         HelpFunctions.localURLEncoder("password") + "=" +
-                        HelpFunctions.localURLEncoder(password.getText().toString());
+                        HelpFunctions.localURLEncoder(HelpFunctions.md5(password.getText().toString()));
 
                 bl.execute(URLs.LOGIN, data);
             }

@@ -1,9 +1,14 @@
 package com.pjj.worktimer.worktimer.helpClasses;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import inapppurchase.util.Base64;
 
 /**
  * Created by Jens on 07.06.2017.
@@ -22,6 +27,27 @@ public class HelpFunctions {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public static String md5(String text){
+        String result;
+        try {
+
+            byte[] bytes = (text).getBytes("UTF-8");
+            MessageDigest md5 = MessageDigest.getInstance("MD5");
+            bytes = md5.digest(bytes);
+
+            result = Base64.encode(bytes);
+
+            return result;
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
         return null;
     }
 }

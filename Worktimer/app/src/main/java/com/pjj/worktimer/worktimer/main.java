@@ -7,10 +7,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.pjj.worktimer.worktimer.form.Generate_Project_Form;
+import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.helpClasses.RequestCodes;
 import com.pjj.worktimer.worktimer.helpClasses.Save;
 import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
