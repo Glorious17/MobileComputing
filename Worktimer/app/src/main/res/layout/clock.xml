@@ -71,9 +71,19 @@
             android:textSize="80dp"
             android:textColor="@color/colorBlack"
             android:layout_below="@+id/workTextMinutes"/>
-        />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/workSeconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/workRLMinutes"
+        android:layout_alignBottom="@id/workRLMinutes"
+        android:text="00"
+        android:textSize="20dp"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"

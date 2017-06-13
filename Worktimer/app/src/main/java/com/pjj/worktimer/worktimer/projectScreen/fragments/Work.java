@@ -3,7 +3,6 @@ package com.pjj.worktimer.worktimer.projectScreen.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ public class Work extends Fragment {
 
     private TextView hours;
     private TextView minutes;
+    private TextView txtviewSeconds;
     private TextView workSoll;
     private TextView workIst;
     private TextView workUmsatz;
@@ -48,6 +48,7 @@ public class Work extends Fragment {
 
         hours = (TextView) view.findViewById(R.id.workHours);
         minutes = (TextView) view.findViewById(R.id.workMinutes);
+        txtviewSeconds = (TextView) view.findViewById(R.id.workSeconds);
 
         btnStart = (Button) view.findViewById(R.id.workBtnStart);
         btnPause = (Button) view.findViewById(R.id.workBtnPause);
@@ -102,6 +103,10 @@ public class Work extends Fragment {
 
     private void setMinutes(String text){
         getActivity().runOnUiThread(new UiThreadAdapter(minutes, text));
+    }
+
+    private void setTxtviewSeconds(String text){
+        getActivity().runOnUiThread(new UiThreadAdapter(txtviewSeconds, text));
     }
 
     /*------------------------------------*/
@@ -175,19 +180,17 @@ public class Work extends Fragment {
 
             int minutesCount = project.getWorkTime()[0];
             int hoursCount = project.getWorkTime()[1];
+            int seconds = 0;
 
             while(running){
                 if(!pause){
 
                     workMillis = System.currentTimeMillis() - currentMillis;
 
-                    if(workMillis % 1000 == 0){
-                        Log.d("Thread", "run: " + workMillis);
-                    }
+                    if(seconds >= 60){
 
-                    if(workMillis >= 60000){
-
-                        currentMillis = System.currentTimeMillis();
+                        seconds = 0;
+                        setTxtviewSeconds("00");
 
                         if(minutesCount >= 59){
 
@@ -214,6 +217,18 @@ public class Work extends Fragment {
                         project.setWorkTime(minutesCount, hoursCount);
                         Save.saveProjects(getContext());
                     }
+
+
+                    if(workMillis/1000 >= 1){
+                        currentMillis = System.currentTimeMillis();
+                        seconds++;
+                        if(seconds < 10){
+                            setTxtviewSeconds("0" + seconds);
+                        }else{
+                            setTxtviewSeconds("" + seconds);
+                        }
+                    }
+
                 }
             }
             project.setWorkTime(minutesCount, hoursCount);

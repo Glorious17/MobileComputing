@@ -6,8 +6,8 @@ package com.pjj.worktimer.worktimer.helpClasses;
 
 public class URLs {
 
-    public static final String LOGIN = "http://zander-bros.de/worktimer/login.php";
-    public static final String REGISTER = "http://zander-bros.de/worktimer/add_user.php";
-    public static final String CHECK_USER = "http://zander-bros.de/worktimer/is_in_user.php";
+    public static final String LOGIN = "http://zea.pascalberlik.de/worktimer/login.php";
+    public static final String REGISTER = "http://zea.pascalberlik.de/worktimer/add_user.php";
+    public static final String CHECK_USER = "http://zea.pascalberlik.de/worktimer/is_in_user.php";
 
 }
