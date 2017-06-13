@@ -53,37 +53,45 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_below="@+id/workOverview">
 
                 <Button
                     android:id="@+id/workBtnStart"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorGreen"
                     android:textColor="@color/colorWhite"
-                    android:text="START"
-                    android:layout_alignParentLeft="true"/>
+                    android:text="START"/>
 
-                <Button
-                    android:id="@+id/workBtnPause"
+                <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorYellow"
-                    android:textColor="@color/colorWhite"
-                    android:text="PAUSE"
-                    android:layout_centerInParent="true"/>
+                    android:layout_centerHorizontal="true">
 
-                <Button
-                    android:id="@+id/workBtnStop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorRed"
-                    android:textColor="@color/colorWhite"
-                    android:text="STOP"
-                    android:layout_alignParentRight="true"/>
+                    <Button
+                        android:id="@+id/workBtnPause"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorYellow"
+                        android:textColor="@color/colorWhite"
+                        android:text="PAUSE"/>
+
+                    <Button
+                        android:id="@+id/workBtnStop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:background="@color/colorRed"
+                        android:textColor="@color/colorWhite"
+                        android:text="STOP"
+                        android:layout_toRightOf="@+id/workBtnPause"/>
+
+                </RelativeLayout>
+
+
 
             </RelativeLayout>
 

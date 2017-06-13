@@ -1,6 +1,5 @@
 package com.pjj.worktimer.worktimer.projectScreen.fragments;
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +12,10 @@ import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.Save;
 import com.pjj.worktimer.worktimer.projectScreen.Project;
 
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +25,9 @@ public class Work extends Fragment {
     private TextView hours;
     private TextView minutes;
     private TextView txtviewSeconds;
+
+    private TextView date;
+
     private TextView workSoll;
     private TextView workIst;
     private TextView workUmsatz;
@@ -29,6 +35,8 @@ public class Work extends Fragment {
     private Button btnStart;
     private Button btnPause;
     private Button btnStop;
+
+    private String startDateTime;
 
     private boolean isPause;
 
@@ -50,6 +58,8 @@ public class Work extends Fragment {
         minutes = (TextView) view.findViewById(R.id.workMinutes);
         txtviewSeconds = (TextView) view.findViewById(R.id.workSeconds);
 
+        date = (TextView) view.findViewById(R.id.workDate);
+
         btnStart = (Button) view.findViewById(R.id.workBtnStart);
         btnPause = (Button) view.findViewById(R.id.workBtnPause);
         btnStop = (Button) view.findViewById(R.id.workBtnStop);
@@ -58,8 +68,8 @@ public class Work extends Fragment {
         btnPause.setOnClickListener(pauseTimer());
         btnStop.setOnClickListener(stopTimer());
 
-        btnPause.setEnabled(false);
-        btnStop.setEnabled(false);
+        btnPause.setVisibility(View.GONE);
+        btnStop.setVisibility(View.GONE);
 
         readProjectWorktime();
 
@@ -72,21 +82,43 @@ public class Work extends Fragment {
     /*---------Program-Functions----------*/
     /*------------------------------------*/
 
-    public void readProjectWorktime(){
+    private void readProjectWorktime(){
 
-        int[] time = project.getWorkTime();
+        Object[] time = project.getWorkTime();
 
-        if(time[0] < 10){
-            minutes.setText("0" + time[0]);
+        txtviewSeconds.setText(setTimes((int)time[0]));
+        minutes.setText(setTimes((int)time[1]));
+        hours.setText(setTimes((int)time[2]));
+
+        String dateTime = (String) time[3];
+
+        if(dateTime == null){
+            date.setText("----");
         }else{
-            minutes.setText("" + time[0]);
+            date.setText("Gestartet am " + (String)time[3]);
         }
 
-        if(time[1] < 10){
-            hours.setText("0" + time[1]);
+    }
+
+    private String setDate(){
+        Calendar c = Calendar.getInstance();
+
+        String text = "" + setTimes(c.get(Calendar.DAY_OF_MONTH)) + ".";
+        text += setTimes(c.get(Calendar.MONTH)+1) + ".";
+        text += c.get(Calendar.YEAR);
+
+        int am_orPM = c.get(Calendar.AM_PM);
+
+        if(am_orPM == 1){
+            text += " um " + (c.get(Calendar.HOUR)+12) + ":";
         }else{
-            hours.setText("" + time[1]);
+            text += " um " + setTimes(c.get(Calendar.HOUR)) + ":";
         }
+        text += setTimes(c.get(Calendar.MINUTE));
+
+
+        date.setText("Gestartet am " + text);
+        return text;
     }
 
     /*------------------------------------*/
@@ -119,9 +151,10 @@ public class Work extends Fragment {
             public void onClick(View v) {
                 timer = new Timer();
                 timer.start();
-                btnStart.setEnabled(false);
-                btnPause.setEnabled(true);
-                btnStop.setEnabled(true);
+                btnStart.setVisibility(View.GONE);
+                btnPause.setVisibility(View.VISIBLE);
+                btnStop.setVisibility(View.VISIBLE);
+                startDateTime = setDate();
             }
         };
     }
@@ -150,11 +183,23 @@ public class Work extends Fragment {
             public void onClick(View v) {
                 Save.saveProjects(getContext());
                 timer.stopTimer();
-                btnStart.setEnabled(true);
-                btnPause.setEnabled(false);
-                btnStop.setEnabled(false);
+                btnStart.setVisibility(View.VISIBLE);
+                btnPause.setVisibility(View.GONE);
+                btnStop.setVisibility(View.GONE);
             }
         };
+    }
+
+    /*------------------------------------*/
+    /*-----------Help functions-----------*/
+    /*------------------------------------*/
+
+    private String setTimes(int time){
+        if(time < 10){
+            return ("0" + time);
+        }else{
+            return ("" + time);
+        }
     }
 
 
@@ -178,8 +223,8 @@ public class Work extends Fragment {
             long workMillis;
             long currentMillis = System.currentTimeMillis();
 
-            int minutesCount = project.getWorkTime()[0];
-            int hoursCount = project.getWorkTime()[1];
+            int minutesCount = (int) project.getWorkTime()[1];
+            int hoursCount = (int) project.getWorkTime()[2];
             int seconds = 0;
 
             while(running){
@@ -198,23 +243,15 @@ public class Work extends Fragment {
                             minutesCount = 0;
                             hoursCount++;
 
-                            if(hoursCount < 10){
-                                setHours("0" + hoursCount);
-                            }else{
-                                setHours("" + hoursCount);
-                            }
+                            setHours(setTimes(hoursCount));
 
                         }else{
 
                             minutesCount++;
 
-                            if(minutesCount < 10){
-                                setMinutes("0" + minutesCount);
-                            }else{
-                                setMinutes("" + minutesCount);
-                            }
+                            setMinutes(setTimes(minutesCount));
                         }
-                        project.setWorkTime(minutesCount, hoursCount);
+                        project.setWorkTime(seconds, minutesCount, hoursCount, startDateTime);
                         Save.saveProjects(getContext());
                     }
 
@@ -222,16 +259,15 @@ public class Work extends Fragment {
                     if(workMillis/1000 >= 1){
                         currentMillis = System.currentTimeMillis();
                         seconds++;
-                        if(seconds < 10){
-                            setTxtviewSeconds("0" + seconds);
-                        }else{
-                            setTxtviewSeconds("" + seconds);
-                        }
+                        setTxtviewSeconds(setTimes(seconds));
                     }
 
                 }
             }
-            project.setWorkTime(minutesCount, hoursCount);
+
+            // END OF LOOP
+            project.setWorkTime(seconds, minutesCount, hoursCount, startDateTime);
+            Save.saveProjects(getContext());
         }
 
         public void pause(){

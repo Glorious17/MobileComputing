@@ -1,8 +1,5 @@
 package com.pjj.worktimer.worktimer.projectScreen;
 
-import android.util.Log;
-import android.widget.TextView;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -15,6 +12,9 @@ public class Project implements Serializable{
 
     private int minutes;
     private int hours;
+    private int seconds;
+
+    private String dateOfStart;
 
     public static final int NAME = 0;
     public static final int FIRMA = 1;
@@ -31,6 +31,7 @@ public class Project implements Serializable{
         ProjectFolder.addProject(this);
         id = ProjectFolder.getProjectId(this);
 
+        seconds = 0;
         minutes = 0;
         hours = 0;
     }
@@ -61,17 +62,21 @@ public class Project implements Serializable{
         return databaseID;
     }
 
-    public int[] getWorkTime() {
-        int[] values = new int[2];
-        values[0] = minutes;
-        values[1] = hours;
+    public Object[] getWorkTime() {
+        Object[] values = new Object[4];
+        values[0] = seconds;
+        values[1] = minutes;
+        values[2] = hours;
+        values[3] = dateOfStart;
         return values;
     }
 
     public void setDatabaseID(int databaseID) { this.databaseID = databaseID; }
 
-    public void setWorkTime(int minutes, int hours) {
+    public void setWorkTime(int seconds, int minutes, int hours, String date) {
         this.minutes = minutes;
         this.hours = hours;
+        this.seconds = seconds;
+        this.dateOfStart = date;
     }
 }
