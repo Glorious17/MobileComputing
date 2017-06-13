@@ -5,17 +5,35 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
-import com.pjj.worktimer.worktimer.projectScreen.fragments.Export;
 import com.pjj.worktimer.worktimer.projectScreen.fragments.Profil;
 import com.pjj.worktimer.worktimer.projectScreen.fragments.Statistik_Project;
 import com.pjj.worktimer.worktimer.projectScreen.fragments.Work;
 
 public class ProjectView extends AppCompatActivity {
 
+    private TextView hours;
+    private TextView minutes;
+    private TextView workSoll;
+    private TextView workIst;
+    private TextView workUmsatz;
+
+    private Button btnStart;
+    private Button btnPause;
+    private Button btnStop;
+
     private Project project;
+
+    /*------------------------------------*/
+    /*-----Override super()-functions-----*/
+    /*------------------------------------*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +46,10 @@ public class ProjectView extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager_project);
         ViewPagerAdapter vpa = new ViewPagerAdapter(getSupportFragmentManager());
         vpa.addFragment("Profil", new Profil());
-        vpa.addFragment("Work", new Work());
+        Work work = new Work();
+        work.setProject(project);
+        vpa.addFragment("Work", work);
         vpa.addFragment("Statistik", new Statistik_Project());
-        vpa.addFragment("Export", new Export());
         viewPager.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPager);
     }

@@ -33,7 +33,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_below="@+id/textName"
-            android:textColorHint="@color/tabIndicatorColor"
+            android:textColorHint="@color/colorBlack"
             android:singleLine="true"/>
 
         <TextView
@@ -160,7 +160,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/colorWhite"
-            android:background="@color/tabIndicatorColor"
+            android:background="@color/colorBlack"
             android:layout_below="@+id/editSteuernummer"
             android:textAllCaps="false"
             android:text="Speichern"/>

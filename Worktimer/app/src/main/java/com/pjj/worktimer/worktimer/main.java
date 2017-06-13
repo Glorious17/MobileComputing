@@ -91,12 +91,8 @@ public class main extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        try {
-            Save.saveProjects(getBaseContext());
-            dashboard.saveOrder();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Save.saveProjects(getBaseContext());
+        dashboard.saveOrder();
     }
 
     /*

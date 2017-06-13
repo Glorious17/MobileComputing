@@ -195,35 +195,23 @@ public class Dashboard extends Fragment {
     /*------------------------------------*/
 
     public void saveOrder(){
-        try {
-            Save.saveOrder(getContext(), projectIds);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Save.saveOrder(getContext(), projectIds);
     }
 
     public void readOrder(){
-        try {
+        int index;
 
-            int index;
+        ArrayList<RelativeLayout> newLayouts = new ArrayList<RelativeLayout>();
+        ArrayList<Integer> newOrder = Save.readOrder(getContext());
 
-            ArrayList<RelativeLayout> newLayouts = new ArrayList<RelativeLayout>();
-            ArrayList<Integer> newOrder = Save.readOrder(getContext());
-
-            if(newOrder != null){
-                for(int i : newOrder){
-                    index = projectIds.indexOf(i);
-                    newLayouts.add(relativeLayouts.get(index));
-                }
-                relativeLayouts = newLayouts;
-                projectIds = newOrder;
-                sort();
+        if(newOrder != null){
+            for(int i : newOrder){
+                index = projectIds.indexOf(i);
+                newLayouts.add(relativeLayouts.get(index));
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            relativeLayouts = newLayouts;
+            projectIds = newOrder;
+            sort();
         }
     }
 
@@ -231,24 +219,16 @@ public class Dashboard extends Fragment {
 
         ArrayList<Project> projects;
 
-        try {
-
-            projects = Save.readProjects(getContext());
-            if(projects == null){
-                return;
-            }
-            ProjectFolder.setProjectFolder(projects);
-            for (Project p : projects) {
-                if(p != null){
-                    addProject(p.getId());
-                }
-            }
-            readOrder();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        projects = Save.readProjects(getContext());
+        if(projects == null){
+            return;
         }
+        ProjectFolder.setProjectFolder(projects);
+        for (Project p : projects) {
+            if(p != null){
+                addProject(p.getId());
+            }
+        }
+        readOrder();
     }
 }

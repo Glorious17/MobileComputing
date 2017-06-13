@@ -4,10 +4,91 @@
     android:layout_height="match_parent"
     tools:context="com.pjj.worktimer.worktimer.projectScreen.fragments.Work">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/workTextWorktimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="WORKTIMER"
+                android:textSize="15dp" />
+
+            <RelativeLayout
+                android:id="@+id/workTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/workTextWorktimer">
+
+                <include
+                    android:id="@+id/clock"
+                    layout="@layout/clock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/workOverview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/workTimer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp">
+
+                <include
+                    layout="@layout/work_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:layout_below="@+id/workOverview">
+
+                <Button
+                    android:id="@+id/workBtnStart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorGreen"
+                    android:textColor="@color/colorWhite"
+                    android:text="START"
+                    android:layout_alignParentLeft="true"/>
+
+                <Button
+                    android:id="@+id/workBtnPause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorYellow"
+                    android:textColor="@color/colorWhite"
+                    android:text="PAUSE"
+                    android:layout_centerInParent="true"/>
+
+                <Button
+                    android:id="@+id/workBtnStop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorRed"
+                    android:textColor="@color/colorWhite"
+                    android:text="STOP"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </FrameLayout>
