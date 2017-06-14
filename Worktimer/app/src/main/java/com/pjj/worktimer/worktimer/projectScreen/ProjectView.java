@@ -12,11 +12,15 @@ import android.widget.TextView;
 
 import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
+import com.pjj.worktimer.worktimer.mainScreen.Statistik;
 import com.pjj.worktimer.worktimer.projectScreen.fragments.Profil;
 import com.pjj.worktimer.worktimer.projectScreen.fragments.Statistik_Project;
 import com.pjj.worktimer.worktimer.projectScreen.fragments.Work;
 
 public class ProjectView extends AppCompatActivity {
+
+
+    private TabLayout tabLayout;
 
     private TextView hours;
     private TextView minutes;
@@ -30,6 +34,8 @@ public class ProjectView extends AppCompatActivity {
 
     private Project project;
 
+    private Statistik_Project statistic_Project;
+
     /*------------------------------------*/
     /*-----Override super()-functions-----*/
     /*------------------------------------*/
@@ -42,16 +48,39 @@ public class ProjectView extends AppCompatActivity {
         setContentView(R.layout.activity_project_view);
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar_project_view));
         getSupportActionBar().setTitle(project.getProjectInfo(Project.NAME));
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout_project);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout_project);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager_project);
         ViewPagerAdapter vpa = new ViewPagerAdapter(getSupportFragmentManager());
         vpa.addFragment("Profil", new Profil());
         Work work = new Work();
         work.setProject(project);
         vpa.addFragment("Work", work);
-        vpa.addFragment("Statistik", new Statistik_Project());
+        statistic_Project = new Statistik_Project();
+        statistic_Project.setProject(project);
+        vpa.addFragment("Statistik", statistic_Project);
         viewPager.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.addOnTabSelectedListener(selectedTabListener());
     }
 
+    /*------------------------------------*/
+    /*--------------Listener--------------*/
+    /*------------------------------------*/
+
+    private TabLayout.OnTabSelectedListener selectedTabListener(){
+        return new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab == tabLayout.getTabAt(2)){
+                    statistic_Project.reload();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        };
+    }
 }

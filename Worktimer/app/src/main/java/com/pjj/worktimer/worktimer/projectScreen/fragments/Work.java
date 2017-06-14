@@ -58,6 +58,10 @@ public class Work extends Fragment {
         minutes = (TextView) view.findViewById(R.id.workMinutes);
         txtviewSeconds = (TextView) view.findViewById(R.id.workSeconds);
 
+        workSoll = (TextView) view.findViewById(R.id.workSOLL);
+        workIst = (TextView) view.findViewById(R.id.workIST);
+        //workUmsatz = (TextView) view.findViewById(R.id.workUmsatz);
+
         date = (TextView) view.findViewById(R.id.workDate);
 
         btnStart = (Button) view.findViewById(R.id.workBtnStart);
@@ -100,7 +104,7 @@ public class Work extends Fragment {
 
     }
 
-    private String setDate(){
+    private String getDate(boolean draw){
         Calendar c = Calendar.getInstance();
 
         String text = "" + setTimes(c.get(Calendar.DAY_OF_MONTH)) + ".";
@@ -116,9 +120,17 @@ public class Work extends Fragment {
         }
         text += setTimes(c.get(Calendar.MINUTE));
 
+        if(draw)
+            date.setText("Gestartet am " + text);
 
-        date.setText("Gestartet am " + text);
         return text;
+    }
+
+    private void refresh(){
+        minutes.setText("00");
+        hours.setText("00");
+        txtviewSeconds.setText("00");
+        date.setText("----");
     }
 
     /*------------------------------------*/
@@ -127,6 +139,10 @@ public class Work extends Fragment {
 
     public void setProject(Project p){
         project = p;
+    }
+
+    private void setIst(String text){
+        getActivity().runOnUiThread(new UiThreadAdapter(workIst, text));
     }
 
     private void setHours(String text){
@@ -154,7 +170,7 @@ public class Work extends Fragment {
                 btnStart.setVisibility(View.GONE);
                 btnPause.setVisibility(View.VISIBLE);
                 btnStop.setVisibility(View.VISIBLE);
-                startDateTime = setDate();
+                startDateTime = getDate(true);
             }
         };
     }
@@ -186,6 +202,7 @@ public class Work extends Fragment {
                 btnStart.setVisibility(View.VISIBLE);
                 btnPause.setVisibility(View.GONE);
                 btnStop.setVisibility(View.GONE);
+                refresh();
             }
         };
     }
@@ -252,6 +269,7 @@ public class Work extends Fragment {
                             setMinutes(setTimes(minutesCount));
                         }
                         project.setWorkTime(seconds, minutesCount, hoursCount, startDateTime);
+                        setIst("" + project.getIst());
                         Save.saveProjects(getContext());
                     }
 
@@ -266,7 +284,7 @@ public class Work extends Fragment {
             }
 
             // END OF LOOP
-            project.setWorkTime(seconds, minutesCount, hoursCount, startDateTime);
+            project.updateHistory(seconds, minutesCount, hoursCount, getDate(false));
             Save.saveProjects(getContext());
         }
 
