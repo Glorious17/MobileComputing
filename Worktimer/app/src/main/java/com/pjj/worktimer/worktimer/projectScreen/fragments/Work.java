@@ -39,6 +39,7 @@ public class Work extends Fragment {
     private String startDateTime;
 
     private boolean isPause;
+    private boolean pauseRunning;
 
     private Project project;
 
@@ -72,12 +73,22 @@ public class Work extends Fragment {
         btnPause.setOnClickListener(pauseTimer());
         btnStop.setOnClickListener(stopTimer());
 
-        btnPause.setVisibility(View.GONE);
-        btnStop.setVisibility(View.GONE);
+        if(readProjectWorktime()){
+            isPause = true;
+            btnStart.setVisibility(View.GONE);
+            btnPause.setVisibility(View.VISIBLE);
+            btnStop.setVisibility(View.VISIBLE);
+            timer = new Timer(true);
+            timer.start();
+            btnPause.setText("Fortsetzen");
+        }else{
+            isPause = false;
+            btnStart.setVisibility(View.VISIBLE);
+            btnPause.setVisibility(View.GONE);
+            btnStop.setVisibility(View.GONE);
+        }
 
-        readProjectWorktime();
-
-        isPause = false;
+        pauseRunning = false;
 
         return view;
     }
@@ -86,7 +97,7 @@ public class Work extends Fragment {
     /*---------Program-Functions----------*/
     /*------------------------------------*/
 
-    private void readProjectWorktime(){
+    private boolean readProjectWorktime(){
 
         Object[] time = project.getWorkTime();
 
@@ -99,9 +110,12 @@ public class Work extends Fragment {
         if(dateTime == null){
             date.setText("----");
         }else{
+            startDateTime = (String)time[3];
             date.setText("Gestartet am " + (String)time[3]);
+            return true;
         }
 
+        return false;
     }
 
     private String getDate(boolean draw){
@@ -157,6 +171,10 @@ public class Work extends Fragment {
         getActivity().runOnUiThread(new UiThreadAdapter(txtviewSeconds, text));
     }
 
+    public void setPauseRunning(){
+        pauseRunning = true;
+    }
+
     /*------------------------------------*/
     /*--------------Listener--------------*/
     /*------------------------------------*/
@@ -165,7 +183,7 @@ public class Work extends Fragment {
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                timer = new Timer();
+                timer = new Timer(false);
                 timer.start();
                 btnStart.setVisibility(View.GONE);
                 btnPause.setVisibility(View.VISIBLE);
@@ -198,6 +216,7 @@ public class Work extends Fragment {
             @Override
             public void onClick(View v) {
                 Save.saveProjects(getContext());
+                pauseRunning = false;
                 timer.stopTimer();
                 btnStart.setVisibility(View.VISIBLE);
                 btnPause.setVisibility(View.GONE);
@@ -229,9 +248,9 @@ public class Work extends Fragment {
         private boolean running;
         private boolean pause;
 
-        public Timer(){
+        public Timer(boolean pause){
             running = true;
-            pause = false;
+            this.pause = pause;
         }
 
         @Override
@@ -244,7 +263,7 @@ public class Work extends Fragment {
             int hoursCount = (int) project.getWorkTime()[2];
             int seconds = 0;
 
-            while(running){
+            while(running && !pauseRunning){
                 if(!pause){
 
                     workMillis = System.currentTimeMillis() - currentMillis;
@@ -284,13 +303,13 @@ public class Work extends Fragment {
             }
 
             // END OF LOOP
-            project.updateHistory(seconds, minutesCount, hoursCount, getDate(false));
+            if(!pauseRunning){
+                project.updateHistory(seconds, minutesCount, hoursCount, getDate(false));
+            }
             Save.saveProjects(getContext());
         }
 
-        public void pause(){
-            pause = true;
-        }
+        public void pause(){ pause = true; }
 
         public void resumeThread(){
             pause = false;

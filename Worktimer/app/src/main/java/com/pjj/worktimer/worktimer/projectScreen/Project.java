@@ -1,12 +1,14 @@
 package com.pjj.worktimer.worktimer.projectScreen;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Project implements Serializable{
 
     private ArrayList<String> projectData;
-    private ArrayList history;
+    private ArrayList<String[]> history;
 
     private int databaseID;
     private int id;
@@ -32,7 +34,7 @@ public class Project implements Serializable{
     public Project(ArrayList<String> projectData){
 
         this.projectData = projectData;
-        this.history = new ArrayList();
+        this.history = new ArrayList<String[]>();
         ProjectFolder.addProject(this);
         id = ProjectFolder.getProjectId(this);
 
@@ -55,11 +57,12 @@ public class Project implements Serializable{
     }
 
     public void updateHistory(int seconds, int minutes, int hours, String endDate){
-        String[] data = {"" + seconds, "" + minutes, "" + hours, endDate};
+        String[] data = {"" + seconds, "" + minutes, "" + hours, dateOfStart, endDate};
         history.add(data);
         this.seconds = 0;
         this.minutes = 0;
         this.hours = 0;
+        Log.d("updateHistory", "updateHistory: "  + history.get(0)[0]);
     }
 
     /*------------------------------------*/
@@ -75,6 +78,8 @@ public class Project implements Serializable{
     }
 
     public float getIst(){ return ist; }
+
+    public ArrayList<String[]> getHistory(){ return history; }
 
     public String getProjectInfo(int infoName){
         if(infoName >= projectData.size()){

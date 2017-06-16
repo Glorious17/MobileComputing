@@ -35,6 +35,7 @@ public class ProjectView extends AppCompatActivity {
     private Project project;
 
     private Statistik_Project statistic_Project;
+    Work work;
 
     /*------------------------------------*/
     /*-----Override super()-functions-----*/
@@ -52,7 +53,7 @@ public class ProjectView extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager_project);
         ViewPagerAdapter vpa = new ViewPagerAdapter(getSupportFragmentManager());
         vpa.addFragment("Profil", new Profil());
-        Work work = new Work();
+        work = new Work();
         work.setProject(project);
         vpa.addFragment("Work", work);
         statistic_Project = new Statistik_Project();
@@ -62,6 +63,12 @@ public class ProjectView extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.addOnTabSelectedListener(selectedTabListener());
+    }
+
+    @Override
+    public void finish(){
+        work.setPauseRunning();
+        super.finish();
     }
 
     /*------------------------------------*/
