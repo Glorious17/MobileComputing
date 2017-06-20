@@ -62,6 +62,10 @@ public class Project implements Serializable{
         }
         String[] data = {title, "" + hours, "" + minutes, dateOfStart, endDate};
         history.add(data);
+        resetValues();
+    }
+
+    public void resetValues(){
         this.seconds = 0;
         this.minutes = 0;
         this.hours = 0;

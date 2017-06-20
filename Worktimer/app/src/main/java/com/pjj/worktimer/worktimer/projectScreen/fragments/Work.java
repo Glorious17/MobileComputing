@@ -254,6 +254,7 @@ public class Work extends Fragment {
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                project.resetValues();
                 Save.saveProjects(getContext());
                 pauseRunning = false;
                 enterTitle = false;
