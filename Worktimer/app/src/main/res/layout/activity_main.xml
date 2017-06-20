@@ -7,19 +7,6 @@
     android:layout_height="match_parent"
     tools:context="com.pjj.worktimer.worktimer.main">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/ic_action_name"
-        app:backgroundTint="@color/colorPrimary"
-        app:fabSize="auto"
-        />
-
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,15 +32,40 @@
         </android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
-    
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+
+    </com.google.android.gms.ads.AdView>
+
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/viewPager"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/appBarLayout">
-
+        android:layout_below="@+id/appBarLayout"
+        android:layout_above="@id/adView">
     </android.support.v4.view.ViewPager>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_action_name"
+        app:backgroundTint="@color/colorPrimary"
+        app:fabSize="auto"
+        android:layout_above="@id/adView"
+        />
+
 
 
 </RelativeLayout>

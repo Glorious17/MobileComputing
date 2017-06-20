@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.pjj.worktimer.worktimer.form.Generate_Project_Form;
 import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.helpClasses.RequestCodes;
@@ -21,7 +23,7 @@ import com.pjj.worktimer.worktimer.mainScreen.Dashboard;
 import com.pjj.worktimer.worktimer.mainScreen.Einstellungen;
 import com.pjj.worktimer.worktimer.mainScreen.Statistik;
 
-import java.io.IOException;
+import com.google.android.gms.ads.MobileAds;
 
 public class main extends AppCompatActivity {
 
@@ -34,6 +36,8 @@ public class main extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter vpa;
 
+    private AdView mAdView;
+
     /*------------------------------------*/
     /*-----Override super()-functions-----*/
     /*------------------------------------*/
@@ -41,6 +45,7 @@ public class main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MobileAds.initialize(this, "ca-app-pub-7748889875467646~9838913818");
         //TextView logo = (TextView) findViewById(R.id.Logo);
         setContentView(R.layout.activity_main);
 
@@ -81,6 +86,10 @@ public class main extends AppCompatActivity {
         //Ein Listener für die TextView-Resource "Login"
         login = (TextView) findViewById(R.id.Login);
         login.setOnClickListener(onClickLogin());
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
 

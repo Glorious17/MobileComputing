@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
 import com.pjj.worktimer.worktimer.mainScreen.Statistik;
@@ -33,6 +35,8 @@ public class ProjectView extends AppCompatActivity {
     private Button btnStop;
 
     private Project project;
+
+    private AdView mAdView;
 
     private Statistik_Project statistic_Project;
     Work work;
@@ -63,12 +67,22 @@ public class ProjectView extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.addOnTabSelectedListener(selectedTabListener());
+
+        mAdView = (AdView) findViewById(R.id.adViewProject);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     @Override
     public void finish(){
         work.setPauseRunning();
         super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        work.setPauseRunning();
+        super.onDestroy();
     }
 
     /*------------------------------------*/

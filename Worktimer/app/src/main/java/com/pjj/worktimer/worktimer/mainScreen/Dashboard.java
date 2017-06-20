@@ -22,17 +22,14 @@ import com.pjj.worktimer.worktimer.projectScreen.ProjectView;
 import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.Save;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import static android.transition.TransitionManager.beginDelayedTransition;
 
 
 public class Dashboard extends Fragment {
 
     private ScrollView scrollView;
     private RelativeLayout relativeLayout;
-    private MarginLayoutParams mpl;
+    private MarginLayoutParams mlp;
     private RelativeLayout.LayoutParams rlLp;
     private ArrayList<RelativeLayout> relativeLayouts = new ArrayList<RelativeLayout>();
     private ArrayList<Integer> projectIds = new ArrayList<Integer>();
@@ -83,17 +80,17 @@ public class Dashboard extends Fragment {
         tv.setId(View.generateViewId());
         tv.setText(currentProject.getProjectInfo(Project.NAME));
         tv.setGravity(Gravity.CENTER);
-        mpl = new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        tv.setLayoutParams(mpl);
+        mlp = new MarginLayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        tv.setLayoutParams(mlp);
         newView.addView(tv);
 
         //ImageView inside the surrounding Layout
         iv = new ImageView(getContext());
         iv.setId(View.generateViewId());
         iv.setImageResource(R.drawable.delete);
-        mpl = new MarginLayoutParams(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),30));
-        mpl.setMargins(0,0,HelpFunctions.dp(getContext(),10),HelpFunctions.dp(getContext(),10));
-        rlLp = new RelativeLayout.LayoutParams(mpl);
+        mlp = new MarginLayoutParams(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),30));
+        mlp.setMargins(0,0,HelpFunctions.dp(getContext(),10),HelpFunctions.dp(getContext(),10));
+        rlLp = new RelativeLayout.LayoutParams(mlp);
         rlLp.addRule(RelativeLayout.ALIGN_PARENT_END);
         rlLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         iv.setLayoutParams(rlLp);
@@ -117,17 +114,17 @@ public class Dashboard extends Fragment {
 
             TransitionManager.beginDelayedTransition(rl);
 
-            mpl = new MarginLayoutParams(HelpFunctions.dp(getContext(),160), HelpFunctions.dp(getContext(),160));
+            mlp = new MarginLayoutParams(HelpFunctions.dp(getContext(),160), HelpFunctions.dp(getContext(),160));
 
             if(!(counter % 2 == 0)){
-                mpl.setMargins(0, HelpFunctions.dp(getContext(),10), HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10));
+                mlp.setMargins(0, HelpFunctions.dp(getContext(),10), HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10));
                 right = true;
             }else{
-                mpl.setMargins(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10), 0, HelpFunctions.dp(getContext(),10));
+                mlp.setMargins(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10), 0, HelpFunctions.dp(getContext(),10));
                 right = false;
             }
 
-            rlLp = new RelativeLayout.LayoutParams(mpl);
+            rlLp = new RelativeLayout.LayoutParams(mlp);
 
             if(right){
                 rlLp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);

@@ -8,9 +8,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/zea_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/zea_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".main">
@@ -24,10 +24,10 @@
         <activity android:name=".projectScreen.ProjectView" />
         <activity
             android:name=".form.Login"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".form.Register"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

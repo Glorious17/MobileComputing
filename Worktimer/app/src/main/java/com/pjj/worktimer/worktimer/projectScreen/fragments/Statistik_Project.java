@@ -1,6 +1,7 @@
 package com.pjj.worktimer.worktimer.projectScreen.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,9 +27,9 @@ public class Statistik_Project extends Fragment {
 
     private RelativeLayout history;
 
-    private Project project;
+    private ArrayList<RelativeLayout> items;
 
-    private int itemCount;
+    private Project project;
 
     /*------------------------------------*/
     /*-----Override super()-functions-----*/
@@ -37,60 +38,65 @@ public class Statistik_Project extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_statistik__project, container, false);
 
-        history = (RelativeLayout) view.findViewById(R.id.statisticContent);
+        ScrollView mainView = new ScrollView(getContext());
+        mainView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
 
-        itemCount = 0;
+        history = new RelativeLayout(getContext());
+        history.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        mainView.addView(history);
 
-        return view;
+        items = new ArrayList<>();
+
+        reload();
+
+        return mainView;
     }
 
     /*------------------------------------*/
     /*---------Program-Functions----------*/
     /*------------------------------------*/
 
-    public boolean reload(){
+    public void reload(){
 
         ArrayList<String[]> statisticHistory = project.getHistory();
 
-        if(statisticHistory.size() > itemCount){
-
-            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT);
-            lp.setMargins(0,0,0,HelpFunctions.dp(getContext(), 20));
+        if(statisticHistory.size() > items.size()){
 
             RelativeLayout newItem;
-            RelativeLayout oldItem = null;
-            String[] dataArray;
+            RelativeLayout.LayoutParams rlLp;
 
-            int itemsToAdd = statisticHistory.size() - itemCount;
+            int itemsToAdd = statisticHistory.size() - items.size();
 
-            while (itemsToAdd > 0){
+            String[] data;
 
-                dataArray = statisticHistory.get(statisticHistory.size()-itemsToAdd);
-                newItem = generateListItem(dataArray[0], dataArray[1], dataArray[2],
-                        dataArray[3], dataArray[4]);
+            while(itemsToAdd > 0){
 
-                if(itemCount == 0){
-                    newItem.setLayoutParams(lp);
-                    history.addView(newItem);
-                }else{
-                    lp.addRule(RelativeLayout.BELOW, oldItem.getId());
-                    newItem.setLayoutParams(lp);
-                    history.addView(newItem);
+                rlLp = getLayoutParams();
+
+                data = statisticHistory.get(statisticHistory.size()-itemsToAdd);
+
+                newItem = generateListItem(data[0], data[1], data[2], data[3], data[4]);
+
+                history.addView(newItem);
+                items.add(newItem);
+
+                newItem.setLayoutParams(rlLp);
+
+                if(items.size() > 1){
+                    rlLp = getLayoutParams();
+                    rlLp.addRule(RelativeLayout.BELOW, newItem.getId());
+                    items.get(items.size()-2).setLayoutParams(rlLp);
                 }
 
-                oldItem = newItem;
                 itemsToAdd--;
 
             }
 
-            return true;
-
         }
 
-        return false;
     }
 
     /*------------------------------------*/
@@ -99,53 +105,39 @@ public class Statistik_Project extends Fragment {
 
     public void setProject(Project p){ project = p; }
 
+    private RelativeLayout.LayoutParams getLayoutParams(){
+
+        RelativeLayout.LayoutParams rlLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        rlLp.setMargins(HelpFunctions.dp(getContext(),20),
+                HelpFunctions.dp(getContext(), 20),
+                HelpFunctions.dp(getContext(),20),
+                0);
+
+        return rlLp;
+    }
+
     /*------------------------------------*/
     /*---------Generate - Layout----------*/
     /*------------------------------------*/
 
-    private RelativeLayout generateListItem(String txtTitel, String txtHours, String txtMinutes, String txtFrom, String txtTo){
+    private RelativeLayout generateListItem(String txtTitle, String txtHours, String txtMinutes, String txtFrom, String txtTo){
 
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-        RelativeLayout item = new RelativeLayout(getContext());
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        RelativeLayout item = (RelativeLayout) inflater.inflate(R.layout.project_statistic_item, null, false);
         item.setId(View.generateViewId());
-        item.setLayoutParams(lp);
 
-        TextView titel = new TextView(getContext());
-        titel.setId(View.generateViewId());
-        lp.setMargins(HelpFunctions.dp(getContext(), 20), HelpFunctions.dp(getContext(), 20), 0, 0);
-        titel.setLayoutParams(lp);
-        titel.setText(txtTitel);
-        item.addView(titel);
+        TextView title = (TextView) item.findViewById(R.id.statistic_item_title);
+        TextView hours = (TextView) item.findViewById(R.id.statistic_item_hours);
+        TextView minutes = (TextView) item.findViewById(R.id.statistic_item_minutes);
+        TextView from = (TextView) item.findViewById(R.id.statistic_item_from);
+        TextView to = (TextView) item.findViewById(R.id.statistic_item_to);
 
-        TextView hours = new TextView(getContext());
-        hours.setId(View.generateViewId());
-        lp.addRule(RelativeLayout.BELOW, titel.getId());
-        hours.setLayoutParams(lp);
+        title.setText(txtTitle);
         hours.setText("Stunden: " + txtHours);
-        item.addView(hours);
-
-        TextView minutes = new TextView(getContext());
-        minutes.setId(View.generateViewId());
-        lp.addRule(RelativeLayout.RIGHT_OF, hours.getId());
-        minutes.setLayoutParams(lp);
         minutes.setText("Minuten: " + txtMinutes);
-        item.addView(minutes);
-
-        TextView from = new TextView(getContext());
-        from.setId(View.generateViewId());
-        lp.removeRule(RelativeLayout.RIGHT_OF);
-        lp.addRule(RelativeLayout.BELOW, hours.getId());
-        from.setLayoutParams(lp);
         from.setText("Von: " + txtFrom);
-        item.addView(from);
-
-        TextView to = new TextView(getContext());
-        to.setId(View.generateViewId());
-        lp.addRule(RelativeLayout.BELOW, from.getId());
-        to.setLayoutParams(lp);
         to.setText("Bis: " + txtTo);
-        item.addView(to);
 
         return item;
     }

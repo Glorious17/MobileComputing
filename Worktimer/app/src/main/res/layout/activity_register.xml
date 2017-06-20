@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.pjj.worktimer.worktimer.form.Register">
 
+    <ImageView
+        android:layout_width= "80dp"
+        android:layout_height="81dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/rlReg"
+        android:src="@mipmap/zea_icon"/>
+
     <RelativeLayout
         android:id="@+id/rlReg"
         android:layout_width="wrap_content"

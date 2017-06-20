@@ -1,14 +1,22 @@
 package com.pjj.worktimer.worktimer.projectScreen.fragments;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pjj.worktimer.worktimer.R;
+import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.helpClasses.Save;
 import com.pjj.worktimer.worktimer.projectScreen.Project;
 
@@ -32,14 +40,18 @@ public class Work extends Fragment {
     private TextView workIst;
     private TextView workUmsatz;
 
+    private EditText input;
+
     private Button btnStart;
     private Button btnPause;
     private Button btnStop;
 
-    private String startDateTime;
-
+    private boolean standby;
     private boolean isPause;
     private boolean pauseRunning;
+    private boolean enterTitle;
+
+    private long standByMillies;
 
     private Project project;
 
@@ -86,11 +98,37 @@ public class Work extends Fragment {
             btnStart.setVisibility(View.VISIBLE);
             btnPause.setVisibility(View.GONE);
             btnStop.setVisibility(View.GONE);
+            timer = new Timer(false);
         }
 
         pauseRunning = false;
+        standby = false;
+        enterTitle = false;
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        if(standby){
+            long duration = System.currentTimeMillis() - standByMillies;
+
+            timer.addSeconds(Math.round(duration/1000));
+
+            standby = false;
+            timer.resumeThread();
+        }
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        if(!pauseRunning){
+            timer.pause();
+            standByMillies = System.currentTimeMillis();
+            standby = true;
+        }
+        super.onPause();
     }
 
     /*------------------------------------*/
@@ -110,7 +148,7 @@ public class Work extends Fragment {
         if(dateTime == null){
             date.setText("----");
         }else{
-            startDateTime = (String)time[3];
+
             date.setText("Gestartet am " + (String)time[3]);
             return true;
         }
@@ -188,7 +226,7 @@ public class Work extends Fragment {
                 btnStart.setVisibility(View.GONE);
                 btnPause.setVisibility(View.VISIBLE);
                 btnStop.setVisibility(View.VISIBLE);
-                startDateTime = getDate(true);
+                project.setDateOfStart(getDate(true));
             }
         };
     }
@@ -197,7 +235,6 @@ public class Work extends Fragment {
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Save.saveProjects(getContext());
                 if(!isPause){
                     timer.pause();
                     btnPause.setText("Fortsetzen");
@@ -207,6 +244,8 @@ public class Work extends Fragment {
                     btnPause.setText("Pause");
                     isPause = false;
                 }
+                Save.saveProjects(getContext());
+
             }
         };
     }
@@ -217,10 +256,14 @@ public class Work extends Fragment {
             public void onClick(View v) {
                 Save.saveProjects(getContext());
                 pauseRunning = false;
+                enterTitle = false;
                 timer.stopTimer();
                 btnStart.setVisibility(View.VISIBLE);
                 btnPause.setVisibility(View.GONE);
                 btnStop.setVisibility(View.GONE);
+                if(!minutes.getText().toString().equals("00") || !hours.getText().toString().equals("00")){
+                    setTitle();
+                }
                 refresh();
             }
         };
@@ -238,6 +281,23 @@ public class Work extends Fragment {
         }
     }
 
+    private void setTitle(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Was hast du gemacht?");
+
+        input = new EditText(getContext());
+        input.setHint("Gib einen Titel ein");
+        builder.setView(input);
+
+        builder.setPositiveButton("weiter", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                enterTitle = true;
+            }
+        });
+
+        builder.show();
+    }
 
     /*------------------------------------*/
     /*-----------Backgroundtasks----------*/
@@ -247,6 +307,10 @@ public class Work extends Fragment {
 
         private boolean running;
         private boolean pause;
+
+        private int secondsCount;
+        private int minutesCount;
+        private int hoursCount;
 
         public Timer(boolean pause){
             running = true;
@@ -259,18 +323,18 @@ public class Work extends Fragment {
             long workMillis;
             long currentMillis = System.currentTimeMillis();
 
-            int minutesCount = (int) project.getWorkTime()[1];
-            int hoursCount = (int) project.getWorkTime()[2];
-            int seconds = 0;
+            secondsCount = (int) project.getWorkTime()[0];
+            minutesCount = (int) project.getWorkTime()[1];
+            hoursCount = (int) project.getWorkTime()[2];
 
             while(running && !pauseRunning){
                 if(!pause){
 
                     workMillis = System.currentTimeMillis() - currentMillis;
 
-                    if(seconds >= 60){
+                    if(secondsCount >= 60){
 
-                        seconds = 0;
+                        secondsCount -= 60;
                         setTxtviewSeconds("00");
 
                         if(minutesCount >= 59){
@@ -287,7 +351,7 @@ public class Work extends Fragment {
 
                             setMinutes(setTimes(minutesCount));
                         }
-                        project.setWorkTime(seconds, minutesCount, hoursCount, startDateTime);
+                        project.setWorkTime(secondsCount, minutesCount, hoursCount);
                         setIst("" + project.getIst());
                         Save.saveProjects(getContext());
                     }
@@ -295,21 +359,37 @@ public class Work extends Fragment {
 
                     if(workMillis/1000 >= 1){
                         currentMillis = System.currentTimeMillis();
-                        seconds++;
-                        setTxtviewSeconds(setTimes(seconds));
+                        secondsCount++;
+                        setTxtviewSeconds(setTimes(secondsCount));
                     }
+
+                }else{
+
+                    project.setWorkTime(secondsCount, minutesCount, hoursCount);
 
                 }
             }
 
             // END OF LOOP
             if(!pauseRunning){
-                project.updateHistory(seconds, minutesCount, hoursCount, getDate(false));
+                if(minutesCount > 0 || hoursCount > 0){
+                    while(!enterTitle){}
+                    project.updateHistory(input.getText().toString(), minutesCount, hoursCount, getDate(false));
+                    input.setText("");
+                }
+            }else{
+                project.setWorkTime(secondsCount, minutesCount, hoursCount);
             }
             Save.saveProjects(getContext());
         }
 
-        public void pause(){ pause = true; }
+        public void addSeconds(int count){
+            secondsCount += count;
+        }
+
+        public void pause(){
+            pause = true;
+        }
 
         public void resumeThread(){
             pause = false;

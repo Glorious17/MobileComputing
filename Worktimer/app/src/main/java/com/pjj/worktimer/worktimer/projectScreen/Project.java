@@ -56,13 +56,16 @@ public class Project implements Serializable{
         ist = Math.round(ist * 10) / 10;
     }
 
-    public void updateHistory(int seconds, int minutes, int hours, String endDate){
-        String[] data = {"" + seconds, "" + minutes, "" + hours, dateOfStart, endDate};
+    public void updateHistory(String title, int minutes, int hours, String endDate){
+        if(title.equals("")){
+            title = dateOfStart;
+        }
+        String[] data = {title, "" + hours, "" + minutes, dateOfStart, endDate};
         history.add(data);
         this.seconds = 0;
         this.minutes = 0;
         this.hours = 0;
-        Log.d("updateHistory", "updateHistory: "  + history.get(0)[0]);
+        dateOfStart = null;
     }
 
     /*------------------------------------*/
@@ -99,12 +102,15 @@ public class Project implements Serializable{
 
     public void setDatabaseID(int databaseID) { this.databaseID = databaseID; }
 
-    public void setWorkTime(int seconds, int minutes, int hours, String date) {
+    public void setWorkTime(int seconds, int minutes, int hours) {
         this.minutes = minutes;
         this.hours = hours;
         this.seconds = seconds;
-        this.dateOfStart = date;
         updateIst();
+    }
+
+    public void setDateOfStart(String date){
+        this.dateOfStart = date;
     }
 
     public void setProjectInfo(int infoName, String newInfo){

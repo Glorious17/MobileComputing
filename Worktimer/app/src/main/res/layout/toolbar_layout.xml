@@ -15,24 +15,19 @@
         android:layout_height="match_parent"
         android:layout_marginRight="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_centerInParent="true"
-            android:textAlignment="center"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:text="Logo"
-            android:id="@+id/Logo"
-            />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/logForm"
+            android:layout_below="@+id/logErrorLayout"
+            android:src="@mipmap/zea_icon"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="2dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:textSize="20dp"
             android:text="Login"
