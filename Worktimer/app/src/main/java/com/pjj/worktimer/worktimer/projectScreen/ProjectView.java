@@ -66,6 +66,8 @@ public class ProjectView extends AppCompatActivity {
         viewPager.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPager);
 
+        tabLayout.getTabAt(1).select();
+
         tabLayout.addOnTabSelectedListener(selectedTabListener());
 
         mAdView = (AdView) findViewById(R.id.adViewProject);

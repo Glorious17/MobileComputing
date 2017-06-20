@@ -296,6 +296,13 @@ public class Work extends Fragment {
             }
         });
 
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                enterTitle = true;
+            }
+        });
+
         builder.show();
     }
 
