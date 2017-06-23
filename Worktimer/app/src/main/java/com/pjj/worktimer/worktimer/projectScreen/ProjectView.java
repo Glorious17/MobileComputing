@@ -36,7 +36,6 @@ public class ProjectView extends AppCompatActivity {
     private Button btnStop;
 
     private Project project;
-
     private AdView mAdView;
 
     private Statistik_Project statistic_Project;
