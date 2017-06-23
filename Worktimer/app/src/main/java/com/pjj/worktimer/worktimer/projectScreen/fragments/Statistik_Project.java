@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.projectScreen.Project;
+import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,8 @@ public class Statistik_Project extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        project = ProjectFolder.getProjectById(getActivity().getIntent().getIntExtra("ProjectId", 0));
 
         ScrollView mainView = new ScrollView(getContext());
         mainView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -102,8 +105,6 @@ public class Statistik_Project extends Fragment {
     /*------------------------------------*/
     /*----------GETTER & SETTER-----------*/
     /*------------------------------------*/
-
-    public void setProject(Project p){ project = p; }
 
     private RelativeLayout.LayoutParams getLayoutParams(){
 

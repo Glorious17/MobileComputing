@@ -19,6 +19,7 @@ import com.pjj.worktimer.worktimer.R;
 import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.helpClasses.Save;
 import com.pjj.worktimer.worktimer.projectScreen.Project;
+import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
 
 import org.w3c.dom.Text;
 
@@ -66,6 +67,8 @@ public class Work extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_work, container, false);
+
+        project = ProjectFolder.getProjectById(getActivity().getIntent().getIntExtra("ProjectId", 0));
 
         hours = (TextView) view.findViewById(R.id.workHours);
         minutes = (TextView) view.findViewById(R.id.workMinutes);
@@ -189,10 +192,6 @@ public class Work extends Fragment {
     /*----------GETTER & SETTER-----------*/
     /*------------------------------------*/
 
-    public void setProject(Project p){
-        project = p;
-    }
-
     private void setIst(String text){
         getActivity().runOnUiThread(new UiThreadAdapter(workIst, text));
     }
@@ -254,8 +253,6 @@ public class Work extends Fragment {
         return new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                project.resetValues();
-                Save.saveProjects(getContext());
                 pauseRunning = false;
                 enterTitle = false;
                 timer.stopTimer();
@@ -385,6 +382,7 @@ public class Work extends Fragment {
                     project.updateHistory(input.getText().toString(), minutesCount, hoursCount, getDate(false));
                     input.setText("");
                 }
+                project.resetValues();
             }else{
                 project.setWorkTime(secondsCount, minutesCount, hoursCount);
             }

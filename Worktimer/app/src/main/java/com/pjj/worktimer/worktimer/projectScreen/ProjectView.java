@@ -5,6 +5,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -52,16 +53,15 @@ public class ProjectView extends AppCompatActivity {
 
         setContentView(R.layout.activity_project_view);
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar_project_view));
-        getSupportActionBar().setTitle(project.getProjectInfo(Project.NAME));
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'> " +
+                project.getProjectInfo(Project.NAME) + " </font>"));
         tabLayout = (TabLayout) findViewById(R.id.tabLayout_project);
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager_project);
         ViewPagerAdapter vpa = new ViewPagerAdapter(getSupportFragmentManager());
         vpa.addFragment("Profil", new Profil());
         work = new Work();
-        work.setProject(project);
         vpa.addFragment("Work", work);
         statistic_Project = new Statistik_Project();
-        statistic_Project.setProject(project);
         vpa.addFragment("Statistik", statistic_Project);
         viewPager.setAdapter(vpa);
         tabLayout.setupWithViewPager(viewPager);
