@@ -8,12 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.pjj.worktimer.worktimer.R;
+import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
 import com.pjj.worktimer.worktimer.helpClasses.ViewPagerAdapter;
 import com.pjj.worktimer.worktimer.mainScreen.Statistik;
 import com.pjj.worktimer.worktimer.projectScreen.fragments.Profil;
@@ -70,8 +73,13 @@ public class ProjectView extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(selectedTabListener());
 
         mAdView = (AdView) findViewById(R.id.adViewProject);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+
+        if(HelpFunctions.getIsPremium()){
+            mAdView.setVisibility(View.GONE);
+        }else{
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
+        }
     }
 
     @Override

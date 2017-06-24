@@ -16,6 +16,12 @@ import inapppurchase.util.Base64;
 
 public class HelpFunctions {
 
+    private static boolean isPremium = false;
+
+    public static boolean getIsPremium(){ return isPremium; }
+
+    public static void setIsPremium(boolean premium){ isPremium = premium; }
+
     public static int dp(Context c, int i) {
         float density = c.getResources().getDisplayMetrics().density;
         return (int)((i * density) + 0.5);

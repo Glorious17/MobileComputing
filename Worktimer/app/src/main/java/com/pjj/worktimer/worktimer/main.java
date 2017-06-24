@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -24,17 +27,28 @@ import com.pjj.worktimer.worktimer.mainScreen.Einstellungen;
 import com.pjj.worktimer.worktimer.mainScreen.Statistik;
 
 import com.google.android.gms.ads.MobileAds;
+import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
+
+import inapppurchase.util.IabHelper;
+import inapppurchase.util.IabResult;
+import inapppurchase.util.Inventory;
+import inapppurchase.util.Purchase;
 
 public class main extends AppCompatActivity {
+
+    private final static String SKU_PREMIUM = "premium_zugang";
 
     private Dashboard dashboard;
     private FloatingActionButton fab;
     private TextView login;
+    private TextView premium;
     private TabLayout tabLayout;
     private TabLayout.Tab firstTab;
     private Toolbar toolbar;
     private ViewPager viewPager;
     private ViewPagerAdapter vpa;
+    private IabHelper mHelper;
+
 
     private AdView mAdView;
 
@@ -87,6 +101,14 @@ public class main extends AppCompatActivity {
         login = (TextView) findViewById(R.id.Login);
         login.setOnClickListener(onClickLogin());
 
+        premium = (TextView) findViewById(R.id.premium);
+        premium.setOnClickListener(onClickPurchase());
+
+        String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnvx55UKJZziI+uO6rUudShr8Hhf/Li/iXfF27y3QZ8lrxCK1Ub9RXrvVL34GTiaqA9Qe/owC410UXqMGQDlS/x3sg7OrCkwh0MatEW75joOOgkt5u7vCi6Smpx0Sb8ZUtOPVvqicNgjcB5WuRsiCx4igQaGQi/+5ZgI8aS+w8QeGVXl3FgbWVMwhiNy4H0U37ZKqKB7aR99CNvjr66Tu4p6Qy03pGyBG9CUGzOz3I9B+L2nMI/OXfxX73Hq8FMdd1PVNl8lviju+OMUj43BUlxcKbHDERWIGdWc91P5JGnOqW9YshcThsnPjL3MqM3Ph6t6XrMsS2j0Q0WDBzdIvSQIDAQAB";
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+        mHelper.startSetup(onIabSetupFinishedListener());
+
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
@@ -124,6 +146,33 @@ public class main extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        dashboard.saveOrder();
+        if (mHelper != null) mHelper.dispose();
+        mHelper = null;
+        super.onDestroy();
+    }
+
+    /*------------------------------------*/
+    /*---------Program-Functions----------*/
+    /*------------------------------------*/
+
+    private void makePremium(){
+        premium.setVisibility(View.GONE);
+        removeAd();
+        HelpFunctions.setIsPremium(true);
+    }
+
+    private void removeAd(){
+        mAdView.setVisibility(View.GONE);
+        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(fab.getLayoutParams());
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        rlp.setMargins(0,0,HelpFunctions.dp(this, 20), HelpFunctions.dp(this, 20));
+        fab.setLayoutParams(rlp);
+    }
+
     /*------------------------------------*/
     /*--------------Listener--------------*/
     /*------------------------------------*/
@@ -132,17 +181,76 @@ public class main extends AppCompatActivity {
     Der OnClickListener für den FloatingActionButton. Es wird die Methode startActivityForResult() genutzt,
     um die Daten aus dem Formular zu übergeben.
      */
-    public View.OnClickListener onClickForm(){
-        return new View.OnClickListener() {
+
+    private IabHelper.OnIabSetupFinishedListener onIabSetupFinishedListener(){
+        return new IabHelper.OnIabSetupFinishedListener() {
             @Override
-            public void onClick(View v) {
-                Intent generateProjectForm = new Intent(getBaseContext(), Generate_Project_Form.class);
-                startActivityForResult(generateProjectForm, RequestCodes.GENERATE_PROJECT_FORM);
+            public void onIabSetupFinished(IabResult result) {
+                if (!result.isSuccess()) {
+                    Log.d("IapHelper", "Problem setting up In-app Billing: " + result);
+                }else{
+                    mHelper.queryInventoryAsync(mGotInventoryListener());
+                }
             }
         };
     }
 
-    public View.OnClickListener onClickLogin(){
+    private IabHelper.QueryInventoryFinishedListener mGotInventoryListener(){
+        return new IabHelper.QueryInventoryFinishedListener() {
+            @Override
+            public void onQueryInventoryFinished(IabResult result, Inventory inv) {
+                if(!inv.hasPurchase(SKU_PREMIUM)){
+                    premium.setVisibility(View.VISIBLE);
+                }else{
+                    makePremium();
+                }
+            }
+        };
+    }
+
+    private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener(){
+        return new IabHelper.OnIabPurchaseFinishedListener() {
+            @Override
+            public void onIabPurchaseFinished(IabResult result, Purchase info) {
+                if(result.isFailure()){
+                    Log.d("PurchaseFails", "onIabPurchaseFinished: " + result.getMessage());
+                }
+
+                if(info.getSku().equals(SKU_PREMIUM)){
+                    makePremium();
+                }
+            }
+        };
+    }
+
+    public View.OnClickListener onClickPurchase(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mHelper.flagEndAsync();
+                mHelper.launchPurchaseFlow(main.this, SKU_PREMIUM, RequestCodes.PURCHASE,
+                        mPurchaseFinishedListener(), "");
+            }
+        };
+    }
+
+    private View.OnClickListener onClickForm(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(HelpFunctions.getIsPremium() || ProjectFolder.getSize() < 2){
+                    Intent generateProjectForm = new Intent(getBaseContext(), Generate_Project_Form.class);
+                    startActivityForResult(generateProjectForm, RequestCodes.GENERATE_PROJECT_FORM);
+                }else{
+                    mHelper.flagEndAsync();
+                    mHelper.launchPurchaseFlow(main.this, SKU_PREMIUM, RequestCodes.PURCHASE,
+                            mPurchaseFinishedListener(), "");
+                }
+            }
+        };
+    }
+
+    private View.OnClickListener onClickLogin(){
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {

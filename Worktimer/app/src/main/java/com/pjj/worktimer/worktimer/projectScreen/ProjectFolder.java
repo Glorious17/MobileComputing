@@ -51,6 +51,8 @@ public class ProjectFolder {
         return projectFolder;
     }
 
+    public static int getSize(){ return projectFolder.size(); }
+
     private static void cleanup(){
         int counter = projectFolder.size()-1;
         Project currentObject = projectFolder.get(counter);

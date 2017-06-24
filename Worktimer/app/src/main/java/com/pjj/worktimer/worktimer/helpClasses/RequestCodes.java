@@ -7,4 +7,5 @@ package com.pjj.worktimer.worktimer.helpClasses;
 public class RequestCodes {
     public static final int GENERATE_PROJECT_FORM = 1;
     public static final int LOGIN = 2;
+    public static final int PURCHASE = 10001;
 }
