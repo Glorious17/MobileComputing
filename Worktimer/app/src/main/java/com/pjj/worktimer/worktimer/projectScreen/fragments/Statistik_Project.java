@@ -110,9 +110,9 @@ public class Statistik_Project extends Fragment {
 
         RelativeLayout.LayoutParams rlLp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-        rlLp.setMargins(HelpFunctions.dp(getContext(),20),
-                HelpFunctions.dp(getContext(), 20),
-                HelpFunctions.dp(getContext(),20),
+        rlLp.setMargins(HelpFunctions.dp(20),
+                HelpFunctions.dp(20),
+                HelpFunctions.dp(20),
                 0);
 
         return rlLp;

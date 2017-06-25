@@ -3,6 +3,8 @@ package com.pjj.worktimer.worktimer.helpClasses;
 import android.content.Context;
 import android.util.Log;
 
+import com.pjj.worktimer.worktimer.main;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
@@ -22,8 +24,8 @@ public class HelpFunctions {
 
     public static void setIsPremium(boolean premium){ isPremium = premium; }
 
-    public static int dp(Context c, int i) {
-        float density = c.getResources().getDisplayMetrics().density;
+    public static int dp(int i) {
+        float density = main.getActivity().getResources().getDisplayMetrics().density;
         return (int)((i * density) + 0.5);
     }
 

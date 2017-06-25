@@ -1,5 +1,6 @@
 package com.pjj.worktimer.worktimer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -9,10 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -49,6 +48,8 @@ public class main extends AppCompatActivity {
     private ViewPagerAdapter vpa;
     private IabHelper mHelper;
 
+    private static Activity self;
+
 
     private AdView mAdView;
 
@@ -62,6 +63,8 @@ public class main extends AppCompatActivity {
         MobileAds.initialize(this, "ca-app-pub-7748889875467646~9838913818");
         //TextView logo = (TextView) findViewById(R.id.Logo);
         setContentView(R.layout.activity_main);
+
+        self = this;
 
         //Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolBar);
@@ -122,8 +125,7 @@ public class main extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        Save.saveProjects(getBaseContext());
-        dashboard.saveOrder();
+        Save.saveProjects();
     }
 
     /*
@@ -169,7 +171,7 @@ public class main extends AppCompatActivity {
         RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(fab.getLayoutParams());
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        rlp.setMargins(0,0,HelpFunctions.dp(this, 20), HelpFunctions.dp(this, 20));
+        rlp.setMargins(0,0,HelpFunctions.dp(20), HelpFunctions.dp(20));
         fab.setLayoutParams(rlp);
     }
 
@@ -267,5 +269,9 @@ public class main extends AppCompatActivity {
     public void writeFormData(int projectId){
         firstTab.select();
         dashboard.addProject(projectId);
+    }
+
+    public static Activity getActivity(){
+        return self;
     }
 }

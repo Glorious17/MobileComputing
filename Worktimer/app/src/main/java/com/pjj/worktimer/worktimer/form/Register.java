@@ -177,7 +177,7 @@ public class Register extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.WRAP_CONTENT);
-                    p.setMargins(0,0,0,HelpFunctions.dp(getBaseContext(),16));
+                    p.setMargins(0,0,0,HelpFunctions.dp(16));
                     p.addRule(RelativeLayout.BELOW, R.id.progressReg);
                     password.setLayoutParams(p);
 
@@ -200,7 +200,7 @@ public class Register extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        p.setMargins(0,0,0,HelpFunctions.dp(getBaseContext(), 16));
+        p.setMargins(0,0,0,HelpFunctions.dp(16));
         p.addRule(RelativeLayout.BELOW, R.id.editRegEmail);
         password.setLayoutParams(p);
         btnRegister.setEnabled(true);
@@ -212,7 +212,7 @@ public class Register extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
         RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
-        p.setMargins(0,0,0,HelpFunctions.dp(getBaseContext(), 16));
+        p.setMargins(0,0,0,HelpFunctions.dp(16));
         p.addRule(RelativeLayout.BELOW, R.id.textRegUserExists);
         password.setLayoutParams(p);
         btnRegister.setEnabled(false);

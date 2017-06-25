@@ -1,10 +1,13 @@
 package com.pjj.worktimer.worktimer.mainScreen;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.pjj.worktimer.worktimer.helpClasses.HelpFunctions;
+import com.pjj.worktimer.worktimer.main;
 import com.pjj.worktimer.worktimer.projectScreen.Project;
 import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
 import com.pjj.worktimer.worktimer.projectScreen.ProjectView;
@@ -31,8 +35,8 @@ public class Dashboard extends Fragment {
     private RelativeLayout relativeLayout;
     private MarginLayoutParams mlp;
     private RelativeLayout.LayoutParams rlLp;
-    private ArrayList<RelativeLayout> relativeLayouts = new ArrayList<RelativeLayout>();
-    private ArrayList<Integer> projectIds = new ArrayList<Integer>();
+    private ArrayList<RelativeLayout> relativeLayouts;
+    private ArrayList<Integer> projectIds;
 
     private Project currentProject;
 
@@ -47,10 +51,12 @@ public class Dashboard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        relativeLayout = new RelativeLayout(getContext());
+        relativeLayout = new RelativeLayout(main.getActivity());
         relativeLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-        scrollView = new ScrollView(getContext());
+        scrollView = new ScrollView(main.getActivity());
         scrollView.addView(relativeLayout);
+        relativeLayouts = new ArrayList<RelativeLayout>();
+        projectIds = new ArrayList<Integer>();
         readSavedProjects();
         return scrollView;
     };
@@ -68,15 +74,22 @@ public class Dashboard extends Fragment {
     /*------------------------------------*/
 
     public void addProject(int projectId){
+        if(relativeLayout == null){
+            relativeLayout = new RelativeLayout(main.getActivity());
+            scrollView = new ScrollView(main.getActivity());
+            scrollView.addView(relativeLayout);
+            readSavedProjects();
+        }
+
         currentProject = ProjectFolder.getProjectById(projectId);
 
         //surrounding Layout
-        RelativeLayout newView = new RelativeLayout(getContext());
+        RelativeLayout newView = new RelativeLayout(main.getActivity());
         newView.setId(View.generateViewId());
         newView.setOnClickListener(onClickToProject());
 
         //Textview inside the surrounding Layout
-        tv = new TextView(getContext());
+        tv = new TextView(main.getActivity());
         tv.setId(View.generateViewId());
         tv.setText(currentProject.getProjectInfo(Project.NAME));
         tv.setGravity(Gravity.CENTER);
@@ -85,11 +98,11 @@ public class Dashboard extends Fragment {
         newView.addView(tv);
 
         //ImageView inside the surrounding Layout
-        iv = new ImageView(getContext());
+        iv = new ImageView(main.getActivity());
         iv.setId(View.generateViewId());
         iv.setImageResource(R.drawable.delete);
-        mlp = new MarginLayoutParams(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),30));
-        mlp.setMargins(0,0,HelpFunctions.dp(getContext(),10),HelpFunctions.dp(getContext(),10));
+        mlp = new MarginLayoutParams(HelpFunctions.dp(30), HelpFunctions.dp(30));
+        mlp.setMargins(0,0,HelpFunctions.dp(10),HelpFunctions.dp(10));
         rlLp = new RelativeLayout.LayoutParams(mlp);
         rlLp.addRule(RelativeLayout.ALIGN_PARENT_END);
         rlLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -114,13 +127,13 @@ public class Dashboard extends Fragment {
 
             TransitionManager.beginDelayedTransition(rl);
 
-            mlp = new MarginLayoutParams(HelpFunctions.dp(getContext(),160), HelpFunctions.dp(getContext(),160));
+            mlp = new MarginLayoutParams(HelpFunctions.dp(160), HelpFunctions.dp(160));
 
             if(!(counter % 2 == 0)){
-                mlp.setMargins(0, HelpFunctions.dp(getContext(),10), HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10));
+                mlp.setMargins(0, HelpFunctions.dp(10), HelpFunctions.dp(30), HelpFunctions.dp(10));
                 right = true;
             }else{
-                mlp.setMargins(HelpFunctions.dp(getContext(),30), HelpFunctions.dp(getContext(),10), 0, HelpFunctions.dp(getContext(),10));
+                mlp.setMargins(HelpFunctions.dp(30), HelpFunctions.dp(10), 0, HelpFunctions.dp(10));
                 right = false;
             }
 
@@ -192,14 +205,14 @@ public class Dashboard extends Fragment {
     /*------------------------------------*/
 
     public void saveOrder(){
-        Save.saveOrder(getContext(), projectIds);
+        Save.saveOrder(projectIds);
     }
 
     public void readOrder(){
         int index;
 
         ArrayList<RelativeLayout> newLayouts = new ArrayList<RelativeLayout>();
-        ArrayList<Integer> newOrder = Save.readOrder(getContext());
+        ArrayList<Integer> newOrder = Save.readOrder();
 
         if(newOrder != null){
             for(int i : newOrder){
@@ -216,7 +229,7 @@ public class Dashboard extends Fragment {
 
         ArrayList<Project> projects;
 
-        projects = Save.readProjects(getContext());
+        projects = Save.readProjects();
         if(projects == null){
             return;
         }

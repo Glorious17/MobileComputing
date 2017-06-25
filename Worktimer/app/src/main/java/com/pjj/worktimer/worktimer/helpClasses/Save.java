@@ -2,6 +2,7 @@ package com.pjj.worktimer.worktimer.helpClasses;
 
 import android.content.Context;
 
+import com.pjj.worktimer.worktimer.main;
 import com.pjj.worktimer.worktimer.projectScreen.Project;
 import com.pjj.worktimer.worktimer.projectScreen.ProjectFolder;
 
@@ -26,11 +27,11 @@ public class Save {
     private static FileInputStream fis;
     private static ObjectInputStream ois;
 
-    public static void saveProjects(Context c) {
+    public static void saveProjects() {
 
         ArrayList<Project> projects = ProjectFolder.getProjectFolder();
 
-        File file = new File(c.getFilesDir(), "project.wk");
+        File file = new File(main.getActivity().getFilesDir(), "project.wk");
         if(file.exists()){
             file.delete();
         }
@@ -57,11 +58,11 @@ public class Save {
 
     }
 
-    public static ArrayList<Project> readProjects(Context c) {
+    public static ArrayList<Project> readProjects() {
 
-        File file = new File(c.getFilesDir(), "project.wk");
+        File file = new File(main.getActivity().getFilesDir(), "project.wk");
 
-        if(c.getFilesDir().exists() && file.exists()){
+        if(main.getActivity().getFilesDir().exists() && file.exists()){
             ArrayList<Project> output = new ArrayList<Project>();
             try {
                 fis = new FileInputStream(file);
@@ -83,13 +84,13 @@ public class Save {
                 e.printStackTrace();
             }
         }
-        c.getFilesDir().mkdirs();
+        main.getActivity().getFilesDir().mkdirs();
         return null;
     }
 
-    public static void saveOrder(Context c, ArrayList<Integer> ids) {
+    public static void saveOrder(ArrayList<Integer> ids) {
 
-        File file = new File(c.getFilesDir(), "order.wk");
+        File file = new File(main.getActivity().getFilesDir(), "order.wk");
         if(file.exists()){
             file.delete();
         }
@@ -113,11 +114,11 @@ public class Save {
         }
     }
 
-    public static ArrayList<Integer> readOrder(Context c) {
+    public static ArrayList<Integer> readOrder() {
 
-        File file = new File(c.getFilesDir(), "order.wk");
+        File file = new File(main.getActivity().getFilesDir(), "order.wk");
 
-        if(c.getFilesDir().exists() && file.exists()){
+        if(main.getActivity().getFilesDir().exists() && file.exists()){
             ArrayList<Integer> output = new ArrayList<Integer>();
             try {
                 fis = new FileInputStream(file);
@@ -136,7 +137,7 @@ public class Save {
                 e.printStackTrace();
             }
         }
-        c.getFilesDir().mkdirs();
+        main.getActivity().getFilesDir().mkdirs();
         return null;
     }
 }
