@@ -35,8 +35,8 @@ public class Dashboard extends Fragment {
     private RelativeLayout relativeLayout;
     private MarginLayoutParams mlp;
     private RelativeLayout.LayoutParams rlLp;
-    private ArrayList<RelativeLayout> relativeLayouts;
-    private ArrayList<Integer> projectIds;
+    private ArrayList<RelativeLayout> relativeLayouts = new ArrayList<RelativeLayout>();
+    private ArrayList<Integer> projectIds = new ArrayList<Integer>();
 
     private Project currentProject;
 
@@ -51,12 +51,12 @@ public class Dashboard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        Log.d("dashboard", "onCreate: ");
         relativeLayout = new RelativeLayout(main.getActivity());
         relativeLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         scrollView = new ScrollView(main.getActivity());
         scrollView.addView(relativeLayout);
-        relativeLayouts = new ArrayList<RelativeLayout>();
-        projectIds = new ArrayList<Integer>();
         readSavedProjects();
         return scrollView;
     };
@@ -163,6 +163,7 @@ public class Dashboard extends Fragment {
         projectIds.add(0,id);
         relativeLayouts.add(0,(RelativeLayout) view);
 
+        saveOrder();
         sort();
     }
 
@@ -172,6 +173,7 @@ public class Dashboard extends Fragment {
         relativeLayouts.remove(id);
         ProjectFolder.removeProject(projectIds.get(id));
         projectIds.remove(id);
+        saveOrder();
         sort();
     }
 

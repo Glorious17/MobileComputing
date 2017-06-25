@@ -90,6 +90,10 @@ public class Save {
 
     public static void saveOrder(ArrayList<Integer> ids) {
 
+        if(ids == null){
+
+        }
+
         File file = new File(main.getActivity().getFilesDir(), "order.wk");
         if(file.exists()){
             file.delete();

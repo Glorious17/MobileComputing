@@ -364,10 +364,6 @@ public class Work extends Fragment {
                         setTxtviewSeconds(setTimes(secondsCount));
                     }
 
-                }else{
-
-                    project.setWorkTime(secondsCount, minutesCount, hoursCount);
-
                 }
             }
 

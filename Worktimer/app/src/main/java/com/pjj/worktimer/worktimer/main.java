@@ -84,8 +84,7 @@ public class main extends AppCompatActivity {
 
         //Dashboard besitzt, anders als die anderen beiden Fragmente, keine Layout-XML. Dieses Fragment wurde per Hand gecoded.
         //Um später auf Funktionen zugreifen zu können wird hier eine globale Instanz von Dashboard erzeugt.
-        dashboard = new Dashboard();
-        vpa.addFragment("Dashboard", dashboard);
+        vpa.addFragment("Dashboard", dashboard = new Dashboard());
         vpa.addFragment("Einstellungen", new Einstellungen());
 
         //Das TabLayout wird mit dem ViewPager-Adapter initialisiert
@@ -122,6 +121,12 @@ public class main extends AppCompatActivity {
     Jedes Mal, wenn die Activity gestoppt wird, sollen alle Projekte gespeichert werden.
     Die Methoden zum Speichern wurden in der Klasse "Save()" statisch angelegt.
      */
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -150,7 +155,6 @@ public class main extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        dashboard.saveOrder();
         if (mHelper != null) mHelper.dispose();
         mHelper = null;
         super.onDestroy();

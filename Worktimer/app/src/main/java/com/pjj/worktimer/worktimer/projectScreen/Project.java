@@ -19,6 +19,7 @@ public class Project implements Serializable{
 
     private float soll;
     private float ist;
+    private float value;
 
     private String dateOfStart;
 
@@ -27,8 +28,6 @@ public class Project implements Serializable{
     public static final int STRASSE = 2;
     public static final int NR = 3;
     public static final int LAND = 4;
-    public static final int UST_IDNR = 5;
-    public static final int STEUERNUMMER = 6;
 
 
     public Project(ArrayList<String> projectData){
@@ -44,6 +43,7 @@ public class Project implements Serializable{
 
         soll = 0;
         ist = 0;
+        value = 0;
     }
 
     /*------------------------------------*/
@@ -52,8 +52,11 @@ public class Project implements Serializable{
 
 
     public void updateIst(){
-        ist = hours + minutes/60;
-        ist = Math.round(ist * 10) / 10;
+        value += 1/60;
+        if(value >= 0.1){
+            ist += 0.1;
+            value = 0;
+        }
     }
 
     public void updateHistory(String title, int minutes, int hours, String endDate){

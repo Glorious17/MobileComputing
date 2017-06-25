@@ -25,16 +25,12 @@ public class Generate_Project_Form extends AppCompatActivity {
     private EditText editStrasse;
     private EditText editNr;
     private EditText editLand;
-    private EditText editUst_idnr;
-    private EditText editStrnr;
 
     private TextView tvName;
     private TextView tvFirma;
     private TextView tvStrasse;
     private TextView tvNr;
     private TextView tvLand;
-    private TextView tvUst_idnr;
-    private TextView tvStrnr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +44,12 @@ public class Generate_Project_Form extends AppCompatActivity {
         editStrasse = (EditText) findViewById(R.id.editStrasse);
         editNr = (EditText) findViewById(R.id.editNr);
         editLand = (EditText) findViewById(R.id.editLand);
-        editUst_idnr = (EditText) findViewById(R.id.editUst_idnr);
-        editStrnr = (EditText) findViewById(R.id.editSteuernummer);
 
         tvName = (TextView) findViewById(R.id.textName);
         tvFirma = (TextView) findViewById(R.id.textFirma);
         tvStrasse = (TextView) findViewById(R.id.textStrasse);
         tvNr = (TextView) findViewById(R.id.textNr);
         tvLand = (TextView) findViewById(R.id.textLand);
-        tvUst_idnr = (TextView) findViewById(R.id.textUst_idnr);
-        tvStrnr = (TextView) findViewById(R.id.textSteuernummer);
 
         standartColorText = tvName.getCurrentTextColor();
         standartColorBackground = editFirma.getDrawingCacheBackgroundColor();
@@ -90,32 +82,24 @@ public class Generate_Project_Form extends AppCompatActivity {
         tvStrasse.setTextColor(standartColorText);
         tvNr.setTextColor(standartColorText);
         tvLand.setTextColor(standartColorText);
-        tvUst_idnr.setTextColor(standartColorText);
-        tvStrnr.setTextColor(standartColorText);
 
         editName.setBackgroundColor(standartColorBackground);
         editFirma.setBackgroundColor(standartColorBackground);
         editStrasse.setBackgroundColor(standartColorBackground);
         editNr.setBackgroundColor(standartColorBackground);
         editLand.setBackgroundColor(standartColorBackground);
-        editUst_idnr.setBackgroundColor(standartColorBackground);
-        editStrnr.setBackgroundColor(standartColorBackground);
 
         String name = editName.getText().toString();
         String firma = editFirma.getText().toString();
         String strasse = editStrasse.getText().toString();
         String nr = editNr.getText().toString();
         String land = editLand.getText().toString();
-        String ust_idnr = editUst_idnr.getText().toString();
-        String strnr = editStrnr.getText().toString();
 
         form.add(name);
         form.add(firma);
         form.add(strasse);
         form.add(nr);
         form.add(land);
-        form.add(ust_idnr);
-        form.add(strnr);
 
         int counter = 0;
         boolean pass = true;
@@ -123,37 +107,31 @@ public class Generate_Project_Form extends AppCompatActivity {
 
         for (String f: form) {
             if(f.equals("")){
-                switch (counter){
+                switch (counter) {
                     case 0:
                         tvName.setTextColor(getResources().getColor(R.color.warning));
                         editName.setBackgroundColor(getResources().getColor(R.color.warning));
+                        pass = false;
                         break;
-                    case 1:
-                        tvFirma.setTextColor(getResources().getColor(R.color.warning));
-                        editFirma.setBackgroundColor(getResources().getColor(R.color.warning));
-                        break;
-                    case 2:
-                        tvStrasse.setTextColor(getResources().getColor(R.color.warning));
-                        editStrasse.setBackgroundColor(getResources().getColor(R.color.warning));
-                        break;
-                    case 3:
-                        tvNr.setTextColor(getResources().getColor(R.color.warning));
-                        editNr.setBackgroundColor(getResources().getColor(R.color.warning));
-                        break;
-                    case 4:
-                        tvLand.setTextColor(getResources().getColor(R.color.warning));
-                        editLand.setBackgroundColor(getResources().getColor(R.color.warning));
-                        break;
-                    case 5:
-                        tvUst_idnr.setTextColor(getResources().getColor(R.color.warning));
-                        editUst_idnr.setBackgroundColor(getResources().getColor(R.color.warning));
-                        break;
-                    case 6:
-                        tvStrnr.setTextColor(getResources().getColor(R.color.warning));
-                        editStrnr.setBackgroundColor(getResources().getColor(R.color.warning));
-                        break;
+                /*
+                case 1:
+                    tvFirma.setTextColor(getResources().getColor(R.color.warning));
+                    editFirma.setBackgroundColor(getResources().getColor(R.color.warning));
+                    break;
+                case 2:
+                    tvStrasse.setTextColor(getResources().getColor(R.color.warning));
+                    editStrasse.setBackgroundColor(getResources().getColor(R.color.warning));
+                    break;
+                case 3:
+                    tvNr.setTextColor(getResources().getColor(R.color.warning));
+                    editNr.setBackgroundColor(getResources().getColor(R.color.warning));
+                    break;
+                case 4:
+                    tvLand.setTextColor(getResources().getColor(R.color.warning));
+                    editLand.setBackgroundColor(getResources().getColor(R.color.warning));
+                    break;
+                */
                 }
-                pass = false;
             }
             counter++;
         }
