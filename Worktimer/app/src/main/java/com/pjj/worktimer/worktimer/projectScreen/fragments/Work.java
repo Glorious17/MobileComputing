@@ -368,12 +368,8 @@ public class Work extends Fragment {
             }
 
             // END OF LOOP
-            if(pauseRunning){
-                project.setWorkTime(secondsCount, minutesCount, hoursCount);
-                Save.saveProjects();
-            }else{
-                project.resetValues();
-            }
+            project.setWorkTime(secondsCount, minutesCount, hoursCount);
+            Save.saveProjects();
         }
 
         public void addSeconds(int count){

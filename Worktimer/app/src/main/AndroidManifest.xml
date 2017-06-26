@@ -13,21 +13,26 @@
         android:roundIcon="@mipmap/zea_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".main">
+        <activity android:name=".main"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".form.Generate_Project_Form" />
-        <activity android:name=".projectScreen.ProjectView" />
+        <activity android:name=".form.Generate_Project_Form"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".projectScreen.ProjectView"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".form.Login"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".form.Register"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
